@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.xrom.ssh.entity.Person;
 import com.xrom.ssh.service.PersonService;
+import com.xrom.ssh.util.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +40,9 @@ public class TestController {
 //    	System.out.println(list.size());
     	return list;
     }
-    @RequestMapping("/deleteAll")
+    @RequestMapping("/findPage")
     @ResponseBody
-    public String deleteAll(){
-    	personService.deleteAll();
-    	return "success";
+    public Page<Person> findPage(){
+    	return personService.findPage();
     }
 }

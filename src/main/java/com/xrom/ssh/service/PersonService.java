@@ -3,6 +3,7 @@ package com.xrom.ssh.service;
 import java.util.List;
 
 import com.xrom.ssh.entity.Person;
+import com.xrom.ssh.util.Page;
 
 /**
  * Created by XRom
@@ -14,4 +15,6 @@ public interface PersonService {
 	List<Person> findAll();
 
 	void deleteAll();
+
+	Page<Person> findPage();
 }

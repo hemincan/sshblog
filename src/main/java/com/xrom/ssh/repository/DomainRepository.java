@@ -2,6 +2,8 @@ package com.xrom.ssh.repository;
 
 import java.util.List;
 
+import com.xrom.ssh.util.Page;
+
 /**
  * 这个接口定义一些十分通用的方法
  * Created by XRom
@@ -23,5 +25,7 @@ public interface DomainRepository<T> {
     void delete(Integer id);
 
     void flush();
+
+	Page<T> findPage(T entity, int pageNum, int pageSize, String orderBy);
 
 }

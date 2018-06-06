@@ -4,11 +4,13 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xrom.ssh.repository.DomainRepository;
+import com.xrom.ssh.util.Page;
 
 
 public class CommonRepositoryImpl<T> implements DomainRepository<T>{
@@ -83,7 +85,22 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
 		
 	}
 
-
+    @Override
+    public Page<T> findPage(T entity, int pageNum, int pageSize, String orderBy) {
+    	Session session = getCurrentSession();
+    	Query q = session.createQuery("from "+ this.clazz.getName());
+    	 //得到滚动结果集
+        ScrollableResults scroll = q.scroll();
+        //滚动到最后一行
+        scroll.last();
+        int maxRecord = scroll.getRowNumber() + 1;
+        //设置分页位置
+        q.setFirstResult((pageNum-1)*pageSize);
+        q.setMaxResults(pageSize);
+        Page<T> page =new Page<T>(pageSize, (long)maxRecord, pageNum);
+        page.setResult(q.list());
+		return page;
+    }
 
 
 }

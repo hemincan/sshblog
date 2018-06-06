@@ -5,6 +5,8 @@ import java.util.List;
 import com.xrom.ssh.entity.Person;
 import com.xrom.ssh.repository.PersonRepository;
 import com.xrom.ssh.service.PersonService;
+import com.xrom.ssh.util.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +37,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deleteAll(){
 //    	personRepository.findAll();
+    }
+    /**
+     * 页数pageNum从一开始,会根据entity中不为空的字段做为条件查出
+     */
+    @Override
+    public Page<Person> findPage(){
+    	return personRepository.findPage(null, 2, 5, "");
     }
 }
