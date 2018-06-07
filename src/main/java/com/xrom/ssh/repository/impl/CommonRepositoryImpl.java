@@ -19,7 +19,7 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
     @Autowired
     private SessionFactory sessionFactory;
 
-    private Session getCurrentSession() {
+    public Session getCurrentSession() {
         return this.sessionFactory.openSession();
     }
 	private Class<T> clazz;  
