@@ -1,6 +1,8 @@
 package com.xrom.ssh.repository.impl;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -88,7 +90,11 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
     @Override
     public Page<T> findPage(T entity, int pageNum, int pageSize, String orderBy) {
     	Session session = getCurrentSession();
-    	Query q = session.createQuery("from "+ this.clazz.getName());
+    	String queryString = this.getAndQueryString(entity);
+    	if(orderBy!=null) {
+    		queryString = queryString + orderBy;
+    	}
+    	Query q = session.createQuery(queryString);
     	 //得到滚动结果集
         ScrollableResults scroll = q.scroll();
         //滚动到最后一行
@@ -101,6 +107,55 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
         page.setResult(q.list());
 		return page;
     }
-
-
+    /**
+     * 通过传入的entity中属性不为空的字段来查询数据,只能查and
+     * @param entity
+     * @return
+     */
+    @Override
+    public List<T> queryByEntity(T entity){
+    	String queryString = this.getAndQueryString(entity);
+    	Session session = getCurrentSession();
+    	Query q = session.createQuery(queryString);
+		return q.list();
+    	
+    }
+    private String getAndQueryString(T entity) {
+    	Class<T> cls = this.clazz;
+    	Field[] fields = cls.getDeclaredFields();  
+    	StringBuffer hql = new StringBuffer();
+    	hql.append("from " + this.clazz.getName() + " as t");
+    	if(entity == null) {
+    		return hql.toString();
+    	}
+    	List<String> list = new ArrayList<String>();
+    	for(int i=0; i<fields.length; i++){  
+            Field f = fields[i];  
+            f.setAccessible(true);  
+            try {
+//            	System.out.println("属性名:" + f.getName() + " 属性值:" + f.get(entity));
+            	Object value = f.get(entity);
+            	if(value == null) {
+            		continue;
+            	}
+            	if(value instanceof java.lang.String){
+            		 value = "'" + value + "'";
+            	}
+            	list.add(" t." + f.getName() + "=" + value + " ");
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+        }   
+    	for (int i = 0; i < list.size(); i++) {
+    		if(i == 0) {
+    			hql.append(" where ");
+    		}
+			hql.append(list.get(i));
+			if(i < list.size()-1){
+				hql.append(" and ");
+			}
+		}
+    	System.out.println(hql.toString());
+		return hql.toString();
+    }
 }

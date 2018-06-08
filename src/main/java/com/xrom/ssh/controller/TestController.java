@@ -2,6 +2,8 @@ package com.xrom.ssh.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.xrom.ssh.entity.Person;
 import com.xrom.ssh.service.PersonService;
 import com.xrom.ssh.util.Page;
@@ -42,7 +44,9 @@ public class TestController {
     }
     @RequestMapping("/findPage")
     @ResponseBody
-    public Page<Person> findPage(){
+    public Page<Person> findPage(HttpServletRequest request ){
+    	String ss =request.getParameter("ss");
+    	System.out.println(ss);
     	return personService.findPage();
     }
 }

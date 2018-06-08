@@ -28,4 +28,6 @@ public interface DomainRepository<T> {
 
 	Page<T> findPage(T entity, int pageNum, int pageSize, String orderBy);
 
+	List<T> queryByEntity(T entity);
+
 }
