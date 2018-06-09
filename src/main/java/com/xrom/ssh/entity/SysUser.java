@@ -20,7 +20,7 @@ public class SysUser {
     private Integer id;
 	
 	@Column(name = "account_number")
-	private Long accountNumber;
+	private String accountNumber;
 	
 	@Column(name = "user_name")
 	private String userName;
@@ -85,11 +85,11 @@ public class SysUser {
 		this.id = id;
 	}
 
-	public Long getAccountNumber() {
+	public String getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(Long accountNumber) {
+	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 

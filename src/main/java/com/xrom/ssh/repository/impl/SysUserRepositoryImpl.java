@@ -10,7 +10,7 @@ import com.xrom.ssh.repository.SysUserRepository;
 public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> implements SysUserRepository{
 	
 	@Override
-	public SysUser getByAccount(Long account){
+	public SysUser getByAccount(String account){
 		SysUser sysUser = new SysUser();
 		sysUser.setAccountNumber(account);
 		List<SysUser> list = this.queryByEntity(sysUser);
@@ -19,4 +19,5 @@ public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> impleme
 		}
 		return null;
 	}
+	
 }

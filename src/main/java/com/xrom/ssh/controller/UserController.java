@@ -1,5 +1,7 @@
 package com.xrom.ssh.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ public class UserController {
 	 
 	 @RequestMapping(value = "/user/login")
 	 @ResponseBody
-	 public Result login(String account, String password){
+	 public Result login(HttpServletRequest request,String account, String password){
 		 return userService.login(account, password);
 	 }
 	 @RequestMapping("/user/register")
@@ -25,4 +27,11 @@ public class UserController {
 			String identityCard, String phone){
 		 return  userService.register(userName, userPassword, identityCard, phone);
 	 }
+	 @RequestMapping("/user/alertPassword")
+	 @ResponseBody
+	 public Result alertPassword(String account, String oldPassword,
+			String newPassword){
+		 return  userService.alertPassword(account, oldPassword, newPassword);
+	 }
+
 }

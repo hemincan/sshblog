@@ -9,4 +9,6 @@ public interface UserService {
 	Result register(String userName, String userPassword, String identityCard,
 			String phone);
 
+	Result alertPassword(String account, String oldPassword, String newPassword);
+
 }
