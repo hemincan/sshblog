@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2018-06-07 22:02:42
+Date: 2018-06-09 16:31:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -67,7 +67,7 @@ CREATE TABLE `person` (
   `phone` varchar(255) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of person
@@ -80,6 +80,7 @@ INSERT INTO `person` VALUES ('7', '1528276720660', 'XRog', 'chenDu', '1838100594
 INSERT INTO `person` VALUES ('8', '1528276721018', 'XRog', 'chenDu', '18381005946', 'this is XRog');
 INSERT INTO `person` VALUES ('9', '1528276721299', 'XRog', 'chenDu', '18381005946', 'this is XRog');
 INSERT INTO `person` VALUES ('10', '1528276721527', 'XRog', 'chenDu', '18381005946', 'this is XRog');
+INSERT INTO `person` VALUES ('11', '1528518022237', 'XRog', 'chenDu', '18381005946', 'this is XRog');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -223,7 +224,7 @@ CREATE TABLE `withdraw` (
   `poundage` int(11) DEFAULT NULL COMMENT '手续费',
   `real_amount` int(11) DEFAULT NULL COMMENT '实发金额',
   `bank_card` varchar(255) DEFAULT NULL COMMENT '银行',
-  `bank_user_nane` varchar(255) DEFAULT NULL COMMENT '银行户名',
+  `bank_user_name` varchar(255) DEFAULT NULL COMMENT '银行户名',
   `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名',
   `bank_address` varchar(255) DEFAULT NULL COMMENT '银行地地址',
   `state` int(11) DEFAULT NULL COMMENT '发放状态',

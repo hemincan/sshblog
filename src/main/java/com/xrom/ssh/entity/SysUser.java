@@ -1,6 +1,7 @@
 package com.xrom.ssh.entity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +52,31 @@ public class SysUser {
 	@Column(name = "address")
 	private String address;
 
+	@Column(name = "bank_card")
+	private String bankCard;
+	
+	@Column(name = "bank_name")
+	private String bankName;
+
+	@Column(name = "real_name")
+	private String realName;
+	
+	@Column(name = "bank__address")
+	private String bankAddress;
+	
+	@Column(name = "recommend_user_id")
+	private Integer recommendUserId;
+	
+	@Column(name = "second_password")
+	private String secondPassword;
+	
+	@Column(name = "is_activate")
+	private Short isActivate;
+
+	@Column(name = "level_typeId")
+	private Integer levelTypeId;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -145,6 +171,70 @@ public class SysUser {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getBankCard() {
+		return bankCard;
+	}
+
+	public void setBankCard(String bankCard) {
+		this.bankCard = bankCard;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getBankAddress() {
+		return bankAddress;
+	}
+
+	public void setBankAddress(String bankAddress) {
+		this.bankAddress = bankAddress;
+	}
+
+	public Integer getRecommendUserId() {
+		return recommendUserId;
+	}
+
+	public void setRecommendUserId(Integer recommendUserId) {
+		this.recommendUserId = recommendUserId;
+	}
+
+	public String getSecondPassword() {
+		return secondPassword;
+	}
+
+	public void setSecondPassword(String secondPassword) {
+		this.secondPassword = secondPassword;
+	}
+
+	public Short getIsActivate() {
+		return isActivate;
+	}
+
+	public void setIsActivate(Short isActivate) {
+		this.isActivate = isActivate;
+	}
+
+	public Integer getLevelTypeId() {
+		return levelTypeId;
+	}
+
+	public void setLevelTypeId(Integer levelTypeId) {
+		this.levelTypeId = levelTypeId;
 	}
 	
 	
