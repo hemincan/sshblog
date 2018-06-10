@@ -1,82 +1,42 @@
-package com.xrom.ssh.entity;
+package com.xrom.ssh.dto.user;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.Data;
-
-@Data
-@Entity
-@Table(name = "sys_user")
-public class SysUser {
-	@Id
-    @GeneratedValue
-    private Integer id;
+/**
+ * 
+ * @author Can
+ *
+ */
+public class UserInfoDTO {
 	
-	@Column(name = "account_number")
+    private Integer id;
+
 	private String accountNumber;
 	
-	@Column(name = "user_name")
 	private String userName;
 	
-	@Column(name = "user_password")
-	private String userPassword;
-	
-	@Column(name = "register_time")
-	private Date registerTime;
-	
-	@Column(name = "user_sex")
 	private Integer userSex;
 	
-	@Column(name = "last_login_time")
-	private Date lastLoginTime;
-	
-	@Column(name = "identity_card")
 	private String identityCard;
 	
-	@Column(name = "phone")
 	private String phone;
 	
-	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "qq_number")
 	private String qqNumber;
 	
-	@Column(name = "address")
 	private String address;
 
-	@Column(name = "bank_card")
 	private String bankCard;
 	
-	@Column(name = "bank_name")
 	private String bankName;
 
-	@Column(name = "real_name")
 	private String realName;
 	
-	@Column(name = "bank__address")
 	private String bankAddress;
 	
-	@Column(name = "recommend_user_id")
 	private Integer recommendUserId;
 	
-	@Column(name = "second_password")
-	private String secondPassword;
-	
-	@Column(name = "is_activate")
-	private Short isActivate;
-
-	@Column(name = "level_type_Id")
 	private Integer levelTypeId;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -101,36 +61,12 @@ public class SysUser {
 		this.userName = userName;
 	}
 
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public Date getRegisterTime() {
-		return registerTime;
-	}
-
-	public void setRegisterTime(Date registerTime) {
-		this.registerTime = registerTime;
-	}
-
 	public Integer getUserSex() {
 		return userSex;
 	}
 
 	public void setUserSex(Integer userSex) {
 		this.userSex = userSex;
-	}
-
-	public Date getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
 	}
 
 	public String getIdentityCard() {
@@ -213,22 +149,6 @@ public class SysUser {
 		this.recommendUserId = recommendUserId;
 	}
 
-	public String getSecondPassword() {
-		return secondPassword;
-	}
-
-	public void setSecondPassword(String secondPassword) {
-		this.secondPassword = secondPassword;
-	}
-
-	public Short getIsActivate() {
-		return isActivate;
-	}
-
-	public void setIsActivate(Short isActivate) {
-		this.isActivate = isActivate;
-	}
-
 	public Integer getLevelTypeId() {
 		return levelTypeId;
 	}
@@ -236,6 +156,7 @@ public class SysUser {
 	public void setLevelTypeId(Integer levelTypeId) {
 		this.levelTypeId = levelTypeId;
 	}
+	
 	
 	
 }

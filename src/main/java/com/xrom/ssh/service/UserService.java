@@ -11,4 +11,6 @@ public interface UserService {
 
 	Result alertPassword(String account, String oldPassword, String newPassword);
 
+	Result getUserInfo(String account);
+
 }

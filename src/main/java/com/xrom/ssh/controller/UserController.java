@@ -33,5 +33,11 @@ public class UserController {
 			String newPassword){
 		 return  userService.alertPassword(account, oldPassword, newPassword);
 	 }
+	 
+	 @RequestMapping("/user/getUserInfo")
+	 @ResponseBody
+	 public Result getUserInfo(String account){
+		 return  userService.getUserInfo(account);
+	 }
 
 }

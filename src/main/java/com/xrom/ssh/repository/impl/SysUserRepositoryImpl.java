@@ -11,6 +11,9 @@ public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> impleme
 	
 	@Override
 	public SysUser getByAccount(String account){
+		if(account==null){
+			return null;
+		}
 		SysUser sysUser = new SysUser();
 		sysUser.setAccountNumber(account);
 		List<SysUser> list = this.queryByEntity(sysUser);

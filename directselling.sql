@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2018-06-09 16:31:43
+Date: 2018-06-10 17:38:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,33 +56,6 @@ CREATE TABLE `declaration_form` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for person
--- ----------------------------
-DROP TABLE IF EXISTS `person`;
-CREATE TABLE `person` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created` bigint(11) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of person
--- ----------------------------
-INSERT INTO `person` VALUES ('3', '1528270029300', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('4', '1528270172492', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('5', '1528276711927', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('6', '1528276720156', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('7', '1528276720660', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('8', '1528276721018', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('9', '1528276721299', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('10', '1528276721527', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-INSERT INTO `person` VALUES ('11', '1528518022237', 'XRog', 'chenDu', '18381005946', 'this is XRog');
-
--- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
@@ -93,11 +66,18 @@ CREATE TABLE `sys_menu` (
   `parent_id` int(11) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
+INSERT INTO `sys_menu` VALUES ('1', '/menu/index', '菜单管理7', '0', 'null');
+INSERT INTO `sys_menu` VALUES ('2', '/menu/add', '添加菜单', '1', null);
+INSERT INTO `sys_menu` VALUES ('3', '/menu/edit', '修改菜单', '1', null);
+INSERT INTO `sys_menu` VALUES ('4', 'w3r', 'were', '0', null);
+INSERT INTO `sys_menu` VALUES ('5', '/menu/index', '菜单管理1w', '0', 'null');
+INSERT INTO `sys_menu` VALUES ('6', 'w3r', 'were2231', '0', 'null');
+INSERT INTO `sys_menu` VALUES ('7', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -136,7 +116,7 @@ CREATE TABLE `sys_role_menu` (
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_number` bigint(20) DEFAULT NULL,
+  `account_number` varchar(20) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   `user_password` varchar(255) DEFAULT NULL,
   `register_time` datetime DEFAULT NULL,
@@ -155,12 +135,14 @@ CREATE TABLE `sys_user` (
   `second_password` varchar(50) DEFAULT NULL,
   `is_activate` tinyint(4) DEFAULT NULL,
   `level_type_id` int(11) DEFAULT NULL,
+  `bank__address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123123', '2018-06-10 01:16:09', '1', '2018-06-10 01:16:25', '456755544333345', '13445677665', '23455@22.com', '1027872373', null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -189,6 +171,9 @@ CREATE TABLE `tree_diagram` (
   `parent_id` int(11) DEFAULT NULL COMMENT '父用户ID',
   `left_performance` int(11) DEFAULT NULL COMMENT '左绩效',
   `right_performance` int(11) DEFAULT NULL COMMENT '右绩效',
+  `left_userId` int(11) DEFAULT NULL,
+  `right_rerformance` int(11) DEFAULT NULL,
+  `right_userId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

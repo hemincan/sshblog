@@ -1,8 +1,10 @@
 package com.xrom.ssh.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xrom.ssh.dto.user.UserInfoDTO;
 import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.repository.SysUserRepository;
 import com.xrom.ssh.service.UserService;
@@ -55,8 +57,8 @@ public class UserServiceImpl implements UserService {
 		if (oldPassword == null || newPassword == null || account == null) {
 			return new Result<>("1", "你的输入不合法", null);
 		}
-		if (newPassword.length() < 8) {
-			return new Result<>("2", "密码需要大于8位", null);
+		if (newPassword.length() < 6) {
+			return new Result<>("2", "密码需要大于等于6位", null);
 		}
 		SysUser user = userRepository.getByAccount(account);
 		if (!oldPassword.equals(user.getUserPassword())){
@@ -65,5 +67,16 @@ public class UserServiceImpl implements UserService {
 		user.setUserPassword(newPassword);
 		userRepository.saveOrUpdate(user);
 		return new Result<>("0", "修改成功", null);
+	}
+	@Override
+	public Result getUserInfo(String account){
+	
+		SysUser user = userRepository.getByAccount(account);
+		if(user == null) {
+			return new Result<>("1","用户不存在",null);
+		}
+		UserInfoDTO dto = new UserInfoDTO();
+		BeanUtils.copyProperties(user, dto);
+		return new Result<UserInfoDTO>("0","获取成功",dto);
 	}
 }
