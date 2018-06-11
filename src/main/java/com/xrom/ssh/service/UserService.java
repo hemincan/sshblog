@@ -1,5 +1,7 @@
 package com.xrom.ssh.service;
 
+import java.util.Set;
+
 import com.xrom.ssh.util.Result;
 
 public interface UserService {
@@ -12,5 +14,8 @@ public interface UserService {
 	Result alertPassword(String account, String oldPassword, String newPassword);
 
 	Result getUserInfo(String account);
-
+	
+	Set<String> findUserRoles(String account); 
+	
+	Set<String> findUserPermisstions(String account); 
 }

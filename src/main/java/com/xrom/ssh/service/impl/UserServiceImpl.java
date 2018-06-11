@@ -1,5 +1,8 @@
 package com.xrom.ssh.service.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,5 +81,19 @@ public class UserServiceImpl implements UserService {
 		UserInfoDTO dto = new UserInfoDTO();
 		BeanUtils.copyProperties(user, dto);
 		return new Result<UserInfoDTO>("0","获取成功",dto);
+	}
+
+	@Override
+	public Set<String> findUserRoles(String account) {
+		Set<String> roles = new HashSet<>();
+		roles.add("test");
+		return roles;
+	}
+
+	@Override
+	public Set<String> findUserPermisstions(String account) {
+		Set<String> permisstions = new HashSet<>();
+		permisstions.add("testper");
+		return permisstions;
 	}
 }

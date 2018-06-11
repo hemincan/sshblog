@@ -10,15 +10,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "user_type")
-public class UserType {
+@Table(name = "agent_type")
+public class AgentType {
 
 	@Id
     @GeneratedValue
 	private Integer id;
 	
-	@Column(name = "level_name")
-	private String levelName;
+	@Column(name = "name")
+	private String name;
 	
 	@Column(name = "able_count")
 	private Integer ableCount;
@@ -37,12 +37,12 @@ public class UserType {
 		this.id = id;
 	}
 
-	public String getLevelName() {
-		return this.levelName;
+	public String getName() {
+		return name;
 	}
 
-	public void setLevelName(String levelName) {
-		this.levelName = levelName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getAbleCount() {

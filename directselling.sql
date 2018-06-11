@@ -1,19 +1,80 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : hemincan
-Source Server Version : 50712
+Source Server         : admin
+Source Server Version : 50610
 Source Host           : localhost:3306
 Source Database       : directselling
 
 Target Server Type    : MYSQL
-Target Server Version : 50712
+Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2018-06-10 17:38:18
+Date: 2018-06-11 16:17:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for agent_tree
+-- ----------------------------
+DROP TABLE IF EXISTS `agent_tree`;
+CREATE TABLE `agent_tree` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `left_user_id` int(11) DEFAULT NULL COMMENT '左用户ID',
+  `right_user_id` int(11) DEFAULT NULL COMMENT '右用户ID',
+  `parent_id` int(11) DEFAULT NULL COMMENT '父用户ID',
+  `left_performance` int(11) DEFAULT NULL COMMENT '左绩效',
+  `right_performance` int(11) DEFAULT NULL COMMENT '右绩效',
+  `left_userId` int(11) DEFAULT NULL,
+  `right_rerformance` int(11) DEFAULT NULL,
+  `right_userId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of agent_tree
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for agent_type
+-- ----------------------------
+DROP TABLE IF EXISTS `agent_type`;
+CREATE TABLE `agent_type` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL COMMENT '用户类型名',
+  `able_count` int(11) DEFAULT NULL COMMENT '可代理数量',
+  `total_money` int(11) DEFAULT NULL COMMENT '总价',
+  `integral` int(11) DEFAULT NULL COMMENT '积分',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of agent_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for apply_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `apply_goods`;
+CREATE TABLE `apply_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `apply_date` datetime DEFAULT NULL COMMENT '报单日期',
+  `goods_type` varchar(255) DEFAULT NULL COMMENT '商品类型',
+  `goods_count` int(11) DEFAULT NULL COMMENT '商品数量',
+  `total_money` int(11) DEFAULT NULL COMMENT '总价格',
+  `receiver_name` varchar(255) DEFAULT NULL COMMENT '收货人',
+  `receiver_phone` varchar(255) DEFAULT NULL COMMENT '收货人地址',
+  `receiver_address` varchar(255) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of apply_goods
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for bonus
@@ -31,28 +92,6 @@ CREATE TABLE `bonus` (
 
 -- ----------------------------
 -- Records of bonus
--- ----------------------------
-
--- ----------------------------
--- Table structure for declaration_form
--- ----------------------------
-DROP TABLE IF EXISTS `declaration_form`;
-CREATE TABLE `declaration_form` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `declaration_date` datetime DEFAULT NULL COMMENT '报单日期',
-  `goods_type` varchar(255) DEFAULT NULL COMMENT '商品类型',
-  `goods_count` int(11) DEFAULT NULL COMMENT '商品数量',
-  `total_money` int(11) DEFAULT NULL COMMENT '总价格',
-  `receiver_name` varchar(255) DEFAULT NULL COMMENT '收货人',
-  `receiver_phone` varchar(255) DEFAULT NULL COMMENT '收货人地址',
-  `receiver_address` varchar(255) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL COMMENT '状态',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of declaration_form
 -- ----------------------------
 
 -- ----------------------------
@@ -134,15 +173,14 @@ CREATE TABLE `sys_user` (
   `recommend_user_id` int(11) DEFAULT NULL,
   `second_password` varchar(50) DEFAULT NULL,
   `is_activate` tinyint(4) DEFAULT NULL,
-  `level_type_id` int(11) DEFAULT NULL,
-  `bank__address` varchar(255) DEFAULT NULL,
+  `agent_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123123', '2018-06-10 01:16:09', '1', '2018-06-10 01:16:25', '456755544333345', '13445677665', '23455@22.com', '1027872373', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123123', '2018-06-10 01:16:09', '1', '2018-06-10 01:16:25', '456755544333345', '13445677665', '23455@22.com', '1027872373', null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -157,45 +195,6 @@ CREATE TABLE `sys_user_role` (
 
 -- ----------------------------
 -- Records of sys_user_role
--- ----------------------------
-
--- ----------------------------
--- Table structure for tree_diagram
--- ----------------------------
-DROP TABLE IF EXISTS `tree_diagram`;
-CREATE TABLE `tree_diagram` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `left_user_id` int(11) DEFAULT NULL COMMENT '左用户ID',
-  `right_user_id` int(11) DEFAULT NULL COMMENT '右用户ID',
-  `parent_id` int(11) DEFAULT NULL COMMENT '父用户ID',
-  `left_performance` int(11) DEFAULT NULL COMMENT '左绩效',
-  `right_performance` int(11) DEFAULT NULL COMMENT '右绩效',
-  `left_userId` int(11) DEFAULT NULL,
-  `right_rerformance` int(11) DEFAULT NULL,
-  `right_userId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tree_diagram
--- ----------------------------
-
--- ----------------------------
--- Table structure for user_type
--- ----------------------------
-DROP TABLE IF EXISTS `user_type`;
-CREATE TABLE `user_type` (
-  `id` int(11) NOT NULL,
-  `level_name` varchar(50) DEFAULT NULL COMMENT '用户类型名',
-  `able_count` int(11) DEFAULT NULL COMMENT '可代理数量',
-  `total_money` int(11) DEFAULT NULL COMMENT '总价',
-  `integral` int(11) DEFAULT NULL COMMENT '积分',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user_type
 -- ----------------------------
 
 -- ----------------------------

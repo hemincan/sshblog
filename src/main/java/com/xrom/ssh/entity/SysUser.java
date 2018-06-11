@@ -1,7 +1,6 @@
 package com.xrom.ssh.entity;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +60,7 @@ public class SysUser {
 	@Column(name = "real_name")
 	private String realName;
 	
-	@Column(name = "bank__address")
+	@Column(name = "bank_address")
 	private String bankAddress;
 	
 	@Column(name = "recommend_user_id")
@@ -73,8 +72,8 @@ public class SysUser {
 	@Column(name = "is_activate")
 	private Short isActivate;
 
-	@Column(name = "level_type_Id")
-	private Integer levelTypeId;
+	@Column(name = "agent_type_id")
+	private Integer agentTypeId;
 	
 	
 	public Integer getId() {
@@ -229,13 +228,15 @@ public class SysUser {
 		this.isActivate = isActivate;
 	}
 
-	public Integer getLevelTypeId() {
-		return levelTypeId;
+	public Integer getAgentTypeId() {
+		return agentTypeId;
 	}
 
-	public void setLevelTypeId(Integer levelTypeId) {
-		this.levelTypeId = levelTypeId;
+	public void setAgentTypeId(Integer agentTypeId) {
+		this.agentTypeId = agentTypeId;
 	}
+
+	
 	
 	
 }

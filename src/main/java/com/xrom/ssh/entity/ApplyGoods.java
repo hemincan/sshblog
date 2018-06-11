@@ -12,8 +12,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "declaration_form")
-public class DeclarationForm {
+@Table(name = "apply_goods")
+public class ApplyGoods {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -21,8 +21,8 @@ public class DeclarationForm {
 	@Column(name = "user_id")
 	private Integer userId;
 
-	@Column(name = "declaration_date")
-	private Date declarationDate;
+	@Column(name = "apply_date")
+	private Date applyDate;
 
 	@Column(name = "goods_type")
 	private String goodsType;
@@ -61,12 +61,12 @@ public class DeclarationForm {
 		this.userId = userId;
 	}
 
-	public Date getDeclarationDate() {
-		return declarationDate;
+	public Date getapplyDate() {
+		return applyDate;
 	}
 
-	public void setDeclarationDate(Date declarationDate) {
-		this.declarationDate = declarationDate;
+	public void setapplyDate(Date applyDate) {
+		this.applyDate = applyDate;
 	}
 
 	public String getGoodsType() {

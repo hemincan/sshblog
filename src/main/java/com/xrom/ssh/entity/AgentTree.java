@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tree_diagram")
-public class TreeDiagram {
+@Table(name = "agent_tree")
+public class AgentTree {
 	@Id
     @GeneratedValue
 	private Integer id;
