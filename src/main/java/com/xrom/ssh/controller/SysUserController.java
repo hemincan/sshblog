@@ -29,10 +29,11 @@ public class SysUserController {
 		Subject currentUser = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(account,
 				password);
-		try{
+		try {
 			currentUser.login(token);
 			token.setRememberMe(true);
-		}catch (Exception e) {
+			currentUser.getSession().setAttribute("account", account);
+		} catch (Exception e) {
 			// 返回登录时的错误信息
 			return (Result) currentUser.getSession().getAttribute("logininfo");
 		}
@@ -47,12 +48,13 @@ public class SysUserController {
 		return (Result) currentUser.getSession().getAttribute("logininfo");
 	}
 
+	// 代理注册代理帐号
 	@RequestMapping("/user/register")
 	@ResponseBody
 	public Result register(String userName, String userPassword,
-			String identityCard, String phone) {
-		return userService
-				.register(userName, userPassword, identityCard, phone);
+			String identityCard, String phone, Integer userSex,
+			String qqNumber, String recommendAccount,Integer agentTypeId) {
+		return userService.register(userName, userPassword, identityCard, phone, userSex, qqNumber, recommendAccount, agentTypeId);
 	}
 
 	@RequestMapping("/user/alertPassword")
@@ -67,12 +69,14 @@ public class SysUserController {
 	public Result getUserInfo(String account) {
 		return userService.getUserInfo(account);
 	}
-	
+
 	@RequestMapping("/user/findPage")
 	@ResponseBody
-	public Result findPage(@RequestParam(defaultValue = "0")int pageIndex,@RequestParam(defaultValue = "15")int pageSize,String orderBy) {
+	public Result findPage(@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
 		return userService.findPage(null, pageIndex, pageSize, orderBy);
 	}
+
 	/**
 	 * shiro没有登录时使用这个链接来返回错误。
 	 * 

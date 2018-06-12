@@ -9,8 +9,6 @@ public interface SysUserService {
 
 	Result login(String account, String password);
 
-	Result register(String userName, String userPassword, String identityCard,
-			String phone);
 
 	Result alertPassword(String account, String oldPassword, String newPassword);
 
@@ -20,5 +18,13 @@ public interface SysUserService {
 	
 	Set<String> findUserPermisstions(String account);
 
-	Result findPage(SysUser entity, int pageIndex, int pageSize, String orderBy); 
+	Result findPage(SysUser entity, int pageIndex, int pageSize, String orderBy);
+
+
+	Result register(String userName, String userPassword, String identityCard,
+			String phone, Integer userSex, String qqNumber,
+			String recommendAccount, Integer agentTypeId);
+
+
+	Result recommendedStructure(); 
 }

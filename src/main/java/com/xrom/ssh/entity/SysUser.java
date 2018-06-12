@@ -1,6 +1,7 @@
 package com.xrom.ssh.entity;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,7 +71,7 @@ public class SysUser {
 	private String secondPassword;
 	
 	@Column(name = "is_activate")
-	private Short isActivate;
+	private Boolean isActivate;
 
 	@Column(name = "agent_type_id")
 	private Integer agentTypeId;
@@ -220,11 +221,11 @@ public class SysUser {
 		this.secondPassword = secondPassword;
 	}
 
-	public Short getIsActivate() {
+	public Boolean getIsActivate() {
 		return isActivate;
 	}
 
-	public void setIsActivate(Short isActivate) {
+	public void setIsActivate(Boolean isActivate) {
 		this.isActivate = isActivate;
 	}
 

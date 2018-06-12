@@ -9,7 +9,7 @@ import com.xrom.ssh.repository.SysUserRepository;
 @Repository
 public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> implements SysUserRepository{
 	
-	@Override
+	
 	public SysUser getByAccount(String account){
 		if(account==null){
 			return null;
@@ -22,5 +22,17 @@ public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> impleme
 		}
 		return null;
 	}
-	
+	@Override
+	public List<SysUser> getUserByRecommendUser(Integer userId) {
+		if(userId==null){
+			return null;
+		}
+		SysUser sysUser = new SysUser();
+		sysUser.setRecommendUserId(userId);
+		List<SysUser> list = this.queryByEntity(sysUser);
+		if (!list.isEmpty()){
+			return list;
+		}
+		return null;
+	}
 }
