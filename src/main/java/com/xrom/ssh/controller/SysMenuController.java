@@ -5,15 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xrom.ssh.service.MenuService;
+import com.xrom.ssh.service.SysMenuService;
 import com.xrom.ssh.util.Result;
 
 @Controller
 @RequestMapping("/menu")
-public class MenuController {
+public class SysMenuController {
 
 	 @Autowired(required=true)
-	 private MenuService menuService;
+	 private SysMenuService menuService;
 	 
 	 @RequestMapping("/findUserMenus")
 	 @ResponseBody

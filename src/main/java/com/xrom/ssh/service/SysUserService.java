@@ -2,9 +2,10 @@ package com.xrom.ssh.service;
 
 import java.util.Set;
 
+import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.util.Result;
 
-public interface UserService {
+public interface SysUserService {
 
 	Result login(String account, String password);
 
@@ -17,5 +18,7 @@ public interface UserService {
 	
 	Set<String> findUserRoles(String account); 
 	
-	Set<String> findUserPermisstions(String account); 
+	Set<String> findUserPermisstions(String account);
+
+	Result findPage(SysUser entity, int pageIndex, int pageSize, String orderBy); 
 }

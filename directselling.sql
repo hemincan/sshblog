@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50610
 File Encoding         : 65001
 
-Date: 2018-06-11 16:17:00
+Date: 2018-06-12 13:47:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,18 +105,20 @@ CREATE TABLE `sys_menu` (
   `parent_id` int(11) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '/menu/index', '菜单管理7', '0', 'null');
-INSERT INTO `sys_menu` VALUES ('2', '/menu/add', '添加菜单', '1', null);
-INSERT INTO `sys_menu` VALUES ('3', '/menu/edit', '修改菜单', '1', null);
-INSERT INTO `sys_menu` VALUES ('4', 'w3r', 'were', '0', null);
-INSERT INTO `sys_menu` VALUES ('5', '/menu/index', '菜单管理1w', '0', 'null');
-INSERT INTO `sys_menu` VALUES ('6', 'w3r', 'were2231', '0', 'null');
+INSERT INTO `sys_menu` VALUES ('1', '/system/menu/index', '菜单管理', '0', 'null');
+INSERT INTO `sys_menu` VALUES ('2', '/system/menu/add', '添加菜单', '1', null);
+INSERT INTO `sys_menu` VALUES ('5', '/system/role/index', '角色管理', '0', 'null');
 INSERT INTO `sys_menu` VALUES ('7', null, null, null, null);
+INSERT INTO `sys_menu` VALUES ('9', '/system/role/add', '角色添加', '5', null);
+INSERT INTO `sys_menu` VALUES ('10', '/system/user/index', '用户管理', '0', null);
+INSERT INTO `sys_menu` VALUES ('11', '/system/user/add', '添加用户', '10', null);
+INSERT INTO `sys_menu` VALUES ('12', '/', '会员中心', '0', null);
+INSERT INTO `sys_menu` VALUES ('13', '/memberCenter/addAgent', '注册代理', '12', null);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -128,11 +130,13 @@ CREATE TABLE `sys_role` (
   `remark` varchar(255) DEFAULT NULL,
   `sort_order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', '佣兵', '保护膜', null);
+INSERT INTO `sys_role` VALUES ('2', '777', '456', null);
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -188,7 +192,7 @@ INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123123', '2018-06-10
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
+  `sys_user_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

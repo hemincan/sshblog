@@ -11,7 +11,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.xrom.ssh.service.UserService;
+import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Result;
 /**
  * shiro的登录和角色权限回调类
@@ -45,7 +45,7 @@ import com.xrom.ssh.util.Result;
 public class UserRealm extends AuthorizingRealm {
 
 	@Autowired
-	private UserService userService;
+	private SysUserService userService;
 	
 	/**
 	 * 获取权限和角色

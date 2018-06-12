@@ -2,7 +2,7 @@ package com.xrom.ssh.service;
 
 import com.xrom.ssh.util.Result;
 
-public interface MenuService {
+public interface SysMenuService {
 
 	Result getUserMenus();
 

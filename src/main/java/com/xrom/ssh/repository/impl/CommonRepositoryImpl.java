@@ -36,16 +36,19 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
 	/**
 	 * 延迟加载一个对象，当使用到它时才查询
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T load(Integer id) {
 		return (T) getCurrentSession().load(this.clazz, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T get(Integer id) {
 		return (T) getCurrentSession().get(this.clazz, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll() {
 		Query q = getCurrentSession().createQuery("from "+ this.clazz.getName());
@@ -86,7 +89,8 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
 		
 	}
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Page<T> findPage(T entity, int pageNum, int pageSize, String orderBy) {
     	Session session = getCurrentSession();
     	String queryString = this.getAndQueryString(entity);
@@ -111,7 +115,8 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
      * @param entity
      * @return
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<T> queryByEntity(T entity){
     	String queryString = this.getAndQueryString(entity);
     	Session session = getCurrentSession();

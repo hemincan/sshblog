@@ -16,8 +16,8 @@ public class SysUserRole {
     @GeneratedValue
     private Integer id;
 	
-	@Column(name = "user_id")
-	private String userId;
+	@Column(name = "sys_user_id")
+	private String sysUserId;
 	
 	@Column(name = "role_id")
 	private String roleId;
@@ -30,13 +30,6 @@ public class SysUserRole {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 
 	public String getRoleId() {
 		return roleId;
@@ -44,6 +37,14 @@ public class SysUserRole {
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
+	}
+
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
 	}
 	
 	

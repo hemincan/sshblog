@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import com.xrom.ssh.dto.user.UserInfoDTO;
 import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.repository.SysUserRepository;
-import com.xrom.ssh.service.UserService;
+import com.xrom.ssh.service.SysUserService;
+import com.xrom.ssh.util.Page;
 import com.xrom.ssh.util.Result;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired(required = true)
 	private SysUserRepository userRepository;
@@ -82,7 +83,11 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(user, dto);
 		return new Result<UserInfoDTO>("0","获取成功",dto);
 	}
-
+	@Override
+	public Result findPage(SysUser entity,int pageIndex,int pageSize,String orderBy){
+		Page<SysUser> page = userRepository.findPage(entity, pageIndex, pageSize, orderBy);
+		return new Result<>("0","获取成功",page);
+	}
 	@Override
 	public Set<String> findUserRoles(String account) {
 		Set<String> roles = new HashSet<>();

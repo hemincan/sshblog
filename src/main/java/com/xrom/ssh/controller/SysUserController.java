@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xrom.ssh.service.UserService;
+import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Result;
 
 @Controller
-public class UserController {
+public class SysUserController {
 
 	@Autowired(required = true)
-	private UserService userService;
+	private SysUserService userService;
 
 	@RequestMapping(value = "/user/login")
 	@ResponseBody
@@ -67,7 +67,12 @@ public class UserController {
 	public Result getUserInfo(String account) {
 		return userService.getUserInfo(account);
 	}
-
+	
+	@RequestMapping("/user/findPage")
+	@ResponseBody
+	public Result findPage(@RequestParam(defaultValue = "0")int pageIndex,@RequestParam(defaultValue = "15")int pageSize,String orderBy) {
+		return userService.findPage(null, pageIndex, pageSize, orderBy);
+	}
 	/**
 	 * shiro没有登录时使用这个链接来返回错误。
 	 * 

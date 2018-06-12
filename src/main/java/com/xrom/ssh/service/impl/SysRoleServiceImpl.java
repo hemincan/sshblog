@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.xrom.ssh.entity.SysRole;
 import com.xrom.ssh.repository.SysRoleRepository;
-import com.xrom.ssh.service.RoleService;
+import com.xrom.ssh.service.SysRoleService;
 import com.xrom.ssh.util.Page;
 import com.xrom.ssh.util.Result;
 @Service
-public class RoleServiceImpl implements RoleService{
+public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired(required = true)
 	private SysRoleRepository sysRoleRepository;
 	

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.xrom.ssh.entity.SysMenu;
 import com.xrom.ssh.repository.SysMenuRepository;
-import com.xrom.ssh.service.MenuService;
+import com.xrom.ssh.service.SysMenuService;
 import com.xrom.ssh.util.Result;
 @Service
-public class MenuServiceImpl implements MenuService {
+public class SysMenuServiceImpl implements SysMenuService {
 
 	@Autowired(required = true)
 	private SysMenuRepository sysMenuRepository;
