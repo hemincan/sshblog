@@ -29,12 +29,62 @@ public class AgentType {
 	@Column(name = "integral")
 	private Integer integral;
 
+	@Column(name = "remark")
+	private String remark;
+	
+	@Column(name = "display_order")
+	private Integer displayOrder;
+	
+	
+	@Column(name = "first_reward_money")
+	private Integer firstRewardMoney;
+	
+	@Column(name = "collision_per")
+	private Double collisionPer;
+	
+	@Column(name = "top_reward")
+	private Integer topReward;
+	
+
+
+	public Double getCollisionPer() {
+		return collisionPer;
+	}
+
+	public void setCollisionPer(Double collisionPer) {
+		this.collisionPer = collisionPer;
+	}
+
+	public Integer getTopReward() {
+		return topReward;
+	}
+
+	public void setTopReward(Integer topReward) {
+		this.topReward = topReward;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Integer getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public Integer getFirstRewardMoney() {
+		return firstRewardMoney;
+	}
+
+	public void setFirstRewardMoney(Integer firstRewardMoney) {
+		this.firstRewardMoney = firstRewardMoney;
 	}
 
 	public String getName() {
@@ -69,4 +119,12 @@ public class AgentType {
 		this.integral = integral;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 }

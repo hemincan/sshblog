@@ -1,53 +1,34 @@
-package com.xrom.ssh.entity;
+package com.xrom.ssh.dto.applygoods;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public class ApplyGoodsInfo {
 
-import lombok.Data;
-
-@Data
-@Entity
-@Table(name = "apply_goods")
-public class ApplyGoods {
-	@Id
-	@GeneratedValue
 	private Integer id;
-	
-	@Column(name = "user_id")
+
 	private Integer userId;
 
-	@Column(name = "apply_date")
 	private Date applyDate;
 
-	@Column(name = "goods_type")
 	private String goodsType;
 
-	@Column(name = "goods_count")
 	private Integer goodsCount;
 
-	@Column(name = "total_money")
 	private Integer totalMoney;
 
-	@Column(name = "receiver_name")
 	private String receiverName;
-	
-	@Column(name = "receiver_phone")
+
 	private String receiverPhone;
-	
-	@Column(name = "receiver_address")
+
 	private String receiverAddress;
 
-	@Column(name = "state")
 	private Integer state;
 
-	@Column(name = "remark")
 	private String remark;
-	
+	private String userName;
+
+	private String userAccount;
+
 	public Integer getId() {
 		return id;
 	}
@@ -64,19 +45,11 @@ public class ApplyGoods {
 		this.userId = userId;
 	}
 
-	public Date getapplyDate() {
+	public Date getApplyDate() {
 		return applyDate;
 	}
 
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public void setapplyDate(Date applyDate) {
+	public void setApplyDate(Date applyDate) {
 		this.applyDate = applyDate;
 	}
 
@@ -136,8 +109,28 @@ public class ApplyGoods {
 		this.state = state;
 	}
 
-	
-	
-	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
 	
 }

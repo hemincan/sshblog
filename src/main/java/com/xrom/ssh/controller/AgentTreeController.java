@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xrom.ssh.service.SysUserService;
+import com.xrom.ssh.service.AgentTreeService;
 import com.xrom.ssh.util.Result;
 /**
  * 代理的结构
@@ -13,11 +13,11 @@ import com.xrom.ssh.util.Result;
  *
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/agentTree")
 public class AgentTreeController {
 
 	@Autowired(required = true)
-	private SysUserService userService;
+	private AgentTreeService agentTreeService;
 	
 	
 	//找出用户与直接推荐代理之间的关系
@@ -25,6 +25,14 @@ public class AgentTreeController {
 	@ResponseBody
 	public Result recommendedStructure() {
 		
-		return userService.recommendedStructure();
+		return agentTreeService.recommendedStructure();
+	}
+	
+	//找出用户与直接推荐代理之间的关系
+	@RequestMapping("/treeStructure")
+	@ResponseBody
+	public Result treeStructure(String account) {
+		
+		return agentTreeService.treeStructure(account);
 	}
 }

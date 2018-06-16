@@ -1,61 +1,43 @@
-package com.xrom.ssh.entity;
+package com.xrom.ssh.dto.withdraw;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-import lombok.Data;
-
-@Data
-@Entity
-@Table(name = "withdraw")
-public class Withdraw  {
-
+public class WithdrawInfo {
 	@Id
-    @GeneratedValue
+	@GeneratedValue
 	private Integer id;
-	
-	@Column(name = "user_id")
+
 	private Integer userId;
-	
-	@Column(name = "withdraw_amount")
+
 	private Integer withdrawAmount;
-	
-	@Column(name = "poundage")
+
 	private Integer poundage;
-	
-	@Column(name = "real_amount")
+
 	private Integer realAmount;
-	
-	@Column(name = "bank_card")
+
 	private String bankCard;
-	
-	@Column(name = "bank_user_name")
+
 	private String bankUserName;
-	
-	@Column(name = "bank_name")
+
 	private String bankName;
-	
-	@Column(name = "bank_address")
+
 	private String bankAddress;
 
-	@Column(name = "state")
 	private Integer state;
-	
-	@Column(name = "application_time")
+
 	private Date applicationTime;
-	
-	@Column(name = "declaration_center")
+
 	private String declarationCenter;
 
+	private String userName;
+
+	private String userAccount;
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -63,7 +45,7 @@ public class Withdraw  {
 	}
 
 	public Integer getUserId() {
-		return this.userId;
+		return userId;
 	}
 
 	public void setUserId(Integer userId) {
@@ -71,7 +53,7 @@ public class Withdraw  {
 	}
 
 	public Integer getWithdrawAmount() {
-		return this.withdrawAmount;
+		return withdrawAmount;
 	}
 
 	public void setWithdrawAmount(Integer withdrawAmount) {
@@ -79,7 +61,7 @@ public class Withdraw  {
 	}
 
 	public Integer getPoundage() {
-		return this.poundage;
+		return poundage;
 	}
 
 	public void setPoundage(Integer poundage) {
@@ -87,7 +69,7 @@ public class Withdraw  {
 	}
 
 	public Integer getRealAmount() {
-		return this.realAmount;
+		return realAmount;
 	}
 
 	public void setRealAmount(Integer realAmount) {
@@ -95,7 +77,7 @@ public class Withdraw  {
 	}
 
 	public String getBankCard() {
-		return this.bankCard;
+		return bankCard;
 	}
 
 	public void setBankCard(String bankCard) {
@@ -103,15 +85,15 @@ public class Withdraw  {
 	}
 
 	public String getBankUserName() {
-		return this.bankUserName;
+		return bankUserName;
 	}
 
-	public void setBankUserNane(String bankUserNane) {
-		this.bankUserName = bankUserNane;
+	public void setBankUserName(String bankUserName) {
+		this.bankUserName = bankUserName;
 	}
 
 	public String getBankName() {
-		return this.bankName;
+		return bankName;
 	}
 
 	public void setBankName(String bankName) {
@@ -119,7 +101,7 @@ public class Withdraw  {
 	}
 
 	public String getBankAddress() {
-		return this.bankAddress;
+		return bankAddress;
 	}
 
 	public void setBankAddress(String bankAddress) {
@@ -127,7 +109,7 @@ public class Withdraw  {
 	}
 
 	public Integer getState() {
-		return this.state;
+		return state;
 	}
 
 	public void setState(Integer state) {
@@ -135,7 +117,7 @@ public class Withdraw  {
 	}
 
 	public Date getApplicationTime() {
-		return this.applicationTime;
+		return applicationTime;
 	}
 
 	public void setApplicationTime(Date applicationTime) {
@@ -143,11 +125,27 @@ public class Withdraw  {
 	}
 
 	public String getDeclarationCenter() {
-		return this.declarationCenter;
+		return declarationCenter;
 	}
 
 	public void setDeclarationCenter(String declarationCenter) {
 		this.declarationCenter = declarationCenter;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+	
 }

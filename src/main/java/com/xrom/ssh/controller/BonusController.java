@@ -6,34 +6,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xrom.ssh.service.ApplyGoodsService;
+import com.xrom.ssh.service.BounsService;
 import com.xrom.ssh.util.Result;
 
 @Controller
-@RequestMapping("/applyGoods")
-public class ApplyGoodsController {
+@RequestMapping("/bonus")
+public class BonusController {
+	
 	@Autowired
-	private ApplyGoodsService applyGoodsService;
-
+	private BounsService bounsService;
 	@RequestMapping("/findPage")
 	@ResponseBody
 	public Result findPage(@RequestParam(defaultValue = "0") int pageIndex,
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
-		return applyGoodsService.findPage(null, pageIndex, pageSize, orderBy);
+		return bounsService.findPage(null, pageIndex, pageSize, orderBy);
 	}
 
-	@RequestMapping("/save")
-	@ResponseBody
-	public Result add(Integer agentTypeId,
-			String receiverAddress, String receiverName, String receiverPhone) {
-
-		return applyGoodsService.save(agentTypeId,receiverAddress,
-				receiverName, receiverPhone);
-	}
 
 	@RequestMapping("/get")
 	@ResponseBody
 	public Result get(Integer id) {
-		return applyGoodsService.get(id);
+		return bounsService.get(id);
+	}
+	
+	@RequestMapping("/findIntegralPage")
+	@ResponseBody
+	public Result findIntegralPage(@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return bounsService.findIntegralPage(null, pageIndex, pageSize, orderBy);
+	}
+
+
+	@RequestMapping("/getIntegral")
+	@ResponseBody
+	public Result getIntegral(Integer id) {
+		return bounsService.getIntegral(id);
 	}
 }

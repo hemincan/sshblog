@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xrom.ssh.service.BounsService;
 import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Result;
 
@@ -19,7 +20,8 @@ public class SysUserController {
 
 	@Autowired(required = true)
 	private SysUserService userService;
-
+	@Autowired
+	private BounsService bounsService;
 	@RequestMapping(value = "/user/login")
 	@ResponseBody
 	public Result login(HttpServletRequest request,
@@ -32,6 +34,7 @@ public class SysUserController {
 		try {
 			currentUser.login(token);
 			token.setRememberMe(true);
+			bounsService.caculateCollision();
 			currentUser.getSession().setAttribute("account", account);
 		} catch (Exception e) {
 			// 返回登录时的错误信息
@@ -53,8 +56,18 @@ public class SysUserController {
 	@ResponseBody
 	public Result register(String userName, String userPassword,
 			String identityCard, String phone, Integer userSex,
-			String qqNumber, String recommendAccount,Integer agentTypeId) {
-		return userService.register(userName, userPassword, identityCard, phone, userSex, qqNumber, recommendAccount, agentTypeId);
+			String qqNumber, String recommendAccount, Integer agentTypeId,
+			String treeParentAccount, String position, String address) {
+		return userService.register(userName, userPassword, identityCard,
+				phone, userSex, qqNumber, recommendAccount, agentTypeId,
+				treeParentAccount, position, address);
+	}
+
+	@RequestMapping("/user/updateInfo")
+	@ResponseBody
+	public Result updateInfo(String phone, String qqNumber, String address,
+			String email, String bankName, String bankCard, String bankAddress) {
+			return userService.updateInfo(phone, qqNumber, address, email, bankName, bankCard, bankAddress);
 	}
 
 	@RequestMapping("/user/alertPassword")
@@ -66,15 +79,16 @@ public class SysUserController {
 
 	@RequestMapping("/user/getUserInfo")
 	@ResponseBody
-	public Result getUserInfo(String account) {
-		return userService.getUserInfo(account);
+	public Result getUserInfo() {
+		return userService.getUserInfo();
 	}
 
-	@RequestMapping("/user/findPage")
+	
+	@RequestMapping("/user/findAdminUserPage")
 	@ResponseBody
-	public Result findPage(@RequestParam(defaultValue = "0") int pageIndex,
+	public Result findAdminUserPage(@RequestParam(defaultValue = "0") int pageIndex,
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
-		return userService.findPage(null, pageIndex, pageSize, orderBy);
+		return userService.findAdminUserPage(null, pageIndex, pageSize, orderBy);
 	}
 
 	/**

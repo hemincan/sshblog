@@ -19,19 +19,19 @@ public class AgentTree {
 	@Column(name = "user_id")
 	private Integer userId;
 	
-	@Column(name = "left_userId")
+	@Column(name = "left_user_id")
 	private Integer leftUserId;
 	
-	@Column(name = "right_userId")
+	@Column(name = "right_user_id")
 	private Integer rightUserId;
 	
-	@Column(name = "parent_id")
-	private Integer parentId;
+	@Column(name = "parent_user_id")
+	private Integer parentUserId;
 
 	@Column(name = "left_performance")
 	private Integer leftPerformance;
 	
-	@Column(name = "right_rerformance")
+	@Column(name = "right_performance")
 	private Integer rightPerformance;
 
 	public Integer getId() {
@@ -66,12 +66,14 @@ public class AgentTree {
 		this.rightUserId = rightUserId;
 	}
 
-	public Integer getParentId() {
-		return parentId;
+	
+
+	public Integer getParentUserId() {
+		return parentUserId;
 	}
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
+	public void setParentUserId(Integer parentUserId) {
+		this.parentUserId = parentUserId;
 	}
 
 	public Integer getLeftPerformance() {

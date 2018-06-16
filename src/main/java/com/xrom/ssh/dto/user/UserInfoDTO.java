@@ -1,5 +1,7 @@
 package com.xrom.ssh.dto.user;
 
+import java.util.Date;
+
 /**
  * 
  * @author Can
@@ -35,8 +37,37 @@ public class UserInfoDTO {
 	
 	private Integer recommendUserId;
 	
-	private Integer levelTypeId;
+	private Integer agentTypeId;
+	private Date lastLoginTime;
+	
+	private Integer leftPerformance;
+	private Integer rightPerformance;
+	
+	public Integer getLeftPerformance() {
+		return leftPerformance;
+	}
 
+	public void setLeftPerformance(Integer leftPerformance) {
+		this.leftPerformance = leftPerformance;
+	}
+
+	public Integer getRightPerformance() {
+		return rightPerformance;
+	}
+
+	public void setRightPerformance(Integer rightPerformance) {
+		this.rightPerformance = rightPerformance;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	private Integer balance;
 	public Integer getId() {
 		return id;
 	}
@@ -149,12 +180,21 @@ public class UserInfoDTO {
 		this.recommendUserId = recommendUserId;
 	}
 
-	public Integer getLevelTypeId() {
-		return levelTypeId;
+
+	public Integer getAgentTypeId() {
+		return agentTypeId;
 	}
 
-	public void setLevelTypeId(Integer levelTypeId) {
-		this.levelTypeId = levelTypeId;
+	public void setAgentTypeId(Integer agentTypeId) {
+		this.agentTypeId = agentTypeId;
+	}
+
+	public Integer getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Integer balance) {
+		this.balance = balance;
 	}
 	
 	

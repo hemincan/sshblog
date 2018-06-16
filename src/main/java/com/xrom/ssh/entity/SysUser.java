@@ -76,7 +76,39 @@ public class SysUser {
 	@Column(name = "agent_type_id")
 	private Integer agentTypeId;
 	
+	@Column(name = "balance")
+	private Integer balance;
 	
+	@Column(name = "integral")
+	private Integer integral;
+	
+	@Column(name = "is_admin")
+	private Boolean isAdmin;
+	
+	public Integer getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(Integer integral) {
+		this.integral = integral;
+	}
+
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public Integer getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Integer balance) {
+		this.balance = balance;
+	}
+
 	public Integer getId() {
 		return id;
 	}

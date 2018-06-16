@@ -11,6 +11,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Result;
 /**
@@ -75,6 +76,8 @@ public class UserRealm extends AuthorizingRealm {
 		SecurityUtils.getSubject().getSession().setAttribute("logininfo", result);
 		if ("0".equals(result.getCode())){
 			// 成功
+			SysUser user = (SysUser) result.getResult();
+			SecurityUtils.getSubject().getSession().setAttribute("userId",user.getId() );
 			SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(account,password,getName());
 			return authenticationInfo;
 		} else {

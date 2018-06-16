@@ -95,7 +95,7 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
     	Session session = getCurrentSession();
     	String queryString = this.getAndQueryString(entity);
     	if(orderBy!=null) {
-    		queryString = queryString + orderBy;
+    		queryString = queryString + " order by " + orderBy;
     	}
     	Query q = session.createQuery(queryString);
     	 //得到滚动结果集

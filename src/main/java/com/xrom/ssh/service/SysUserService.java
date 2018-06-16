@@ -12,7 +12,6 @@ public interface SysUserService {
 
 	Result alertPassword(String account, String oldPassword, String newPassword);
 
-	Result getUserInfo(String account);
 	
 	Set<String> findUserRoles(String account); 
 	
@@ -21,10 +20,22 @@ public interface SysUserService {
 	Result findPage(SysUser entity, int pageIndex, int pageSize, String orderBy);
 
 
+
 	Result register(String userName, String userPassword, String identityCard,
 			String phone, Integer userSex, String qqNumber,
-			String recommendAccount, Integer agentTypeId);
+			String recommendAccount, Integer agentTypeId,
+			String treeParentAccount, String position, String address);
 
 
-	Result recommendedStructure(); 
+	Result getUserInfo();
+
+
+	Result updateInfo(String phone, String qqNumber, String address,
+			String email, String bankName, String bankCard, String bankAddress);
+
+
+	Result findAdminUserPage(SysUser object, int pageIndex, int pageSize,
+			String orderBy);
+
+
 }
