@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2018-06-16 23:42:35
+Date: 2018-06-18 16:44:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,9 +33,9 @@ CREATE TABLE `agent_tree` (
 -- ----------------------------
 -- Records of agent_tree
 -- ----------------------------
-INSERT INTO `agent_tree` VALUES ('1', '1', null, '31', '0', '20000', '0');
-INSERT INTO `agent_tree` VALUES ('22', '31', null, '32', '1', '0', '2200');
-INSERT INTO `agent_tree` VALUES ('23', '32', null, null, '31', '0', '0');
+INSERT INTO `agent_tree` VALUES ('1', '1', null, '31', '0', '4800', '0');
+INSERT INTO `agent_tree` VALUES ('22', '31', null, '32', '1', '1600', '0');
+INSERT INTO `agent_tree` VALUES ('23', '32', null, null, '31', '1000', '0');
 
 -- ----------------------------
 -- Table structure for agent_type
@@ -59,8 +59,8 @@ CREATE TABLE `agent_type` (
 -- Records of agent_type
 -- ----------------------------
 INSERT INTO `agent_type` VALUES ('1', '一级代理', '50', '2990', '2200', '送4瓶洗发水+围布+手套+喷壳+吹风', null, '500', '0.1', '40000');
-INSERT INTO `agent_type` VALUES ('2', '二级代理', '30', '1790', '1000', null, null, '200', '0.09', '30000');
-INSERT INTO `agent_type` VALUES ('3', '三级代理', '6', '388', '0', null, null, '20', '0.07', '20000');
+INSERT INTO `agent_type` VALUES ('2', '二级代理', '30', '1790', '1000', '什么都不送', null, '200', '0.09', '30000');
+INSERT INTO `agent_type` VALUES ('3', '三级代理', '6', '388', '0', '送两瓶洗发水', null, '60', '0.2', '50000');
 
 -- ----------------------------
 -- Table structure for apply_goods
@@ -78,23 +78,27 @@ CREATE TABLE `apply_goods` (
   `receiver_address` varchar(255) DEFAULT NULL,
   `state` int(11) DEFAULT NULL COMMENT '状态',
   `remark` varchar(255) DEFAULT NULL,
+  `user_account` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of apply_goods
 -- ----------------------------
-INSERT INTO `apply_goods` VALUES ('1', '1', '2018-06-15 23:27:54', '一级代理', '50', '2990', '何敏灿', '13445677665', '你342334234', '0', null);
-INSERT INTO `apply_goods` VALUES ('2', '1', '2018-06-15 23:28:33', '一级代理', '50', '2990', '何敏灿', '13445677665', '你342334234', '0', null);
-INSERT INTO `apply_goods` VALUES ('3', '1', '2018-06-15 23:29:49', '一级代理', '50', '2990', '何敏灿', '13445677665', '234', '0', null);
-INSERT INTO `apply_goods` VALUES ('4', '1', '2018-06-15 23:47:57', '一级代理', '50', '2990', '何敏灿', '13445677665', '3456789', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('5', '22', '2018-06-16 20:40:58', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('6', '22', '2018-06-16 20:43:06', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('7', '22', '2018-06-16 20:46:20', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('8', '22', '2018-06-16 20:48:50', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('9', '22', '2018-06-16 20:49:26', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('10', '22', '2018-06-16 21:05:10', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
-INSERT INTO `apply_goods` VALUES ('11', '32', '2018-06-16 21:15:10', '一级代理', '50', '2990', '呵呵', '12443413412', '234234', '0', '送4瓶洗发水+围布+手套+喷壳+吹风');
+INSERT INTO `apply_goods` VALUES ('1', '1', '2018-06-15 23:27:54', '一级代理', '50', '2990', '何敏灿', '13445677665', '你342334234', '0', null, null);
+INSERT INTO `apply_goods` VALUES ('2', '1', '2018-06-15 23:28:33', '一级代理', '50', '2990', '何敏灿', '13445677665', '你342334234', '0', null, null);
+INSERT INTO `apply_goods` VALUES ('3', '1', '2018-06-15 23:29:49', '一级代理', '50', '2990', '何敏灿', '13445677665', '234', '0', null, null);
+INSERT INTO `apply_goods` VALUES ('4', '1', '2018-06-15 23:47:57', '一级代理', '50', '2990', '何敏灿', '13445677665', '3456789', '0', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('5', '22', '2018-06-16 20:40:58', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('6', '22', '2018-06-16 20:43:06', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('7', '22', '2018-06-16 20:46:20', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '0', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('8', '22', '2018-06-16 20:48:50', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('9', '22', '2018-06-16 20:49:26', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('10', '22', '2018-06-16 21:05:10', '一级代理', '50', '2990', 'asdf', 'sdf', 'asdf', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('11', '32', '2018-06-16 21:15:10', '一级代理', '50', '2990', '呵呵', '12443413412', '234234', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', null);
+INSERT INTO `apply_goods` VALUES ('12', '1', '2018-06-17 16:02:30', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
+INSERT INTO `apply_goods` VALUES ('13', '1', '2018-06-17 16:15:57', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
+INSERT INTO `apply_goods` VALUES ('14', '1', '2018-06-18 11:57:45', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
 
 -- ----------------------------
 -- Table structure for bonus
@@ -111,21 +115,16 @@ CREATE TABLE `bonus` (
   `agent_name` varchar(50) DEFAULT NULL,
   `state` int(11) DEFAULT NULL COMMENT '0:还是余额，1，正在提现中，2，已经提现',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bonus
 -- ----------------------------
-INSERT INTO `bonus` VALUES ('1', '1', '2018-06-16 00:58:10', '推荐代理奖金', null, '500', '8491459', 'r', '0');
-INSERT INTO `bonus` VALUES ('2', '1', '2018-06-16 20:40:58', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('3', '1', '2018-06-16 20:43:06', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('4', '1', '2018-06-16 20:46:20', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('5', '1', '2018-06-16 20:48:50', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('6', '1', '2018-06-16 20:49:26', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('7', '1', '2018-06-16 21:05:10', '推荐代理奖金', null, '500', '7452868', 'asdf', '0');
-INSERT INTO `bonus` VALUES ('8', '1', '2018-06-16 21:15:11', '推荐代理奖金', null, '500', '4319589', '呵呵', '0');
-INSERT INTO `bonus` VALUES ('9', '1', '2018-06-16 23:19:36', '对碰奖金', null, '2190', null, null, '1');
-INSERT INTO `bonus` VALUES ('10', '1', '2018-06-16 23:25:53', '对碰奖金', null, '200', null, null, '1');
+INSERT INTO `bonus` VALUES ('162', '1', '2018-06-17 18:43:41', '对碰奖金', null, '1000', null, null, '1');
+INSERT INTO `bonus` VALUES ('163', '31', '2018-06-17 18:43:51', '对碰奖金', null, '20', null, null, '1');
+INSERT INTO `bonus` VALUES ('164', '1', '2018-06-18 11:55:41', '对碰奖金', null, '500', null, null, '1');
+INSERT INTO `bonus` VALUES ('165', '1', '2018-06-18 11:57:01', '对碰奖金', null, '20', null, null, '1');
+INSERT INTO `bonus` VALUES ('166', '31', '2018-06-18 11:57:01', '对碰奖金', null, '20', null, null, '1');
 
 -- ----------------------------
 -- Table structure for integral
@@ -164,7 +163,7 @@ CREATE TABLE `sys_menu` (
   `parent_id` int(11) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -189,6 +188,7 @@ INSERT INTO `sys_menu` VALUES ('21', '/moneyCenter/bonus', '奖金记录', '19',
 INSERT INTO `sys_menu` VALUES ('22', '/moneyCenter/withdraw', '提现记录', '19', null);
 INSERT INTO `sys_menu` VALUES ('23', '/moneyCenter/integral', '积分记录', '19', null);
 INSERT INTO `sys_menu` VALUES ('24', '/moneyCenter/applyWithdraw', '申请提现', '19', null);
+INSERT INTO `sys_menu` VALUES ('25', '/memberCenter/agentTypeEdit', '代理类型编辑', '12', null);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -196,17 +196,18 @@ INSERT INTO `sys_menu` VALUES ('24', '/moneyCenter/applyWithdraw', '申请提现
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(255) DEFAULT NULL,
+  `role_name` varchar(50) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   `sort_order` int(11) DEFAULT NULL,
+  `en_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '佣兵', '保护膜', null);
-INSERT INTO `sys_role` VALUES ('2', '777', '456', null);
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '超级管理员有最高权限', null, 'superadmin');
+INSERT INTO `sys_role` VALUES ('2', '普通管理员', '可以访问非超级管理员的其他内容', null, 'admin');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -252,12 +253,12 @@ CREATE TABLE `sys_user` (
   `integral` int(11) DEFAULT NULL,
   `is_admin` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123', '2018-06-10 01:16:09', '1', '2018-06-16 23:25:53', '456755544333345', '13445677665', '23455@22.com', '10278723734', '广西南宁横县莲塘', '45644364653634534', '中国农业银行', null, '广西南宁东葛路', '0', null, '1', '1', '2342', '2200', '1');
+INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123', '2018-06-10 01:16:09', '1', '2018-06-18 13:49:03', '456755544333345', '13445677665', '23455@22.com', '10278723734', '广西南宁横县莲塘', '45644364653634534', '中国农业银行', null, '广西南宁东葛路', '0', null, '1', '1', '5362', '2200', '1');
 INSERT INTO `sys_user` VALUES ('2', '9482427', '2342342', '235235', '2018-06-13 22:02:38', '1', null, '5235235', '253', null, '25323', null, null, null, null, null, '1', null, '1', '1', '0', null, null);
 INSERT INTO `sys_user` VALUES ('3', '4046828', '2343', '4234234', '2018-06-12 20:34:00', '1', '2018-06-12 20:34:00', '423423', '234234', null, '234', null, null, null, '2343', null, '1', '666666', '1', '1', '0', '6600', null);
 INSERT INTO `sys_user` VALUES ('4', '7489642', '23423', '4234234', '2018-06-12 20:39:28', '1', '2018-06-12 20:39:28', '423423', '234234', null, '234234', null, null, null, '23423', null, '1', '666666', '1', '1', '0', null, null);
@@ -287,7 +288,7 @@ INSERT INTO `sys_user` VALUES ('27', '2341301', '234', '23423', '2018-06-15 22:3
 INSERT INTO `sys_user` VALUES ('28', '2501227', '234', '23423', '2018-06-15 22:37:02', '1', '2018-06-15 22:37:02', '234', '234', null, '234', '23423', null, null, '234', null, '1', '666666', '1', '1', '0', null, null);
 INSERT INTO `sys_user` VALUES ('29', '7906974', '2434', '34234', '2018-06-16 00:55:29', '1', '2018-06-16 00:55:29', '2342342', '234234', null, '234234', '2353452', null, null, '2434', null, '1', '666666', '1', '1', '0', null, null);
 INSERT INTO `sys_user` VALUES ('30', '8491459', 'r', '234234', '2018-06-16 00:58:10', '1', '2018-06-16 00:58:10', 'r\'r\'we\'re\'r', '234', null, '234234', '234234', null, null, 'r', null, '1', '666666', '1', '1', '0', null, null);
-INSERT INTO `sys_user` VALUES ('31', '4576506', '李小姐', '234234', '2018-06-16 21:14:09', '1', '2018-06-16 21:14:09', '235252439523', '2354523', null, '235325', '广西南宁', null, null, '李小姐', null, '1', '666666', '1', '1', '0', '2200', null);
+INSERT INTO `sys_user` VALUES ('31', '4576506', '李小姐', '234234', '2018-06-16 21:14:09', '1', '2018-06-16 21:14:09', '235252439523', '2354523', null, '235325', '广西南宁', null, null, '李小姐', null, '1', '666666', '1', '1', '240', '2200', null);
 INSERT INTO `sys_user` VALUES ('32', '4319589', '呵呵', '123123', '2018-06-16 21:14:43', '1', '2018-06-16 21:15:00', '2343524524', '12443413412', null, '234234', '234234', null, null, '呵呵', null, '1', '666666', '1', '1', '0', null, null);
 
 -- ----------------------------
@@ -299,11 +300,13 @@ CREATE TABLE `sys_user_role` (
   `sys_user_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('15', '1', '2');
+INSERT INTO `sys_user_role` VALUES ('16', '1', '1');
 
 -- ----------------------------
 -- Table structure for withdraw
@@ -322,11 +325,14 @@ CREATE TABLE `withdraw` (
   `state` int(11) DEFAULT NULL COMMENT '发放状态',
   `application_time` datetime DEFAULT NULL COMMENT '申请时间',
   `declaration_center` varchar(255) DEFAULT NULL COMMENT '报单中心',
+  `user_account` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of withdraw
 -- ----------------------------
-INSERT INTO `withdraw` VALUES ('1', '1', '3', '0', '3', 'werwer', 'werwer', '3wr23r23', 'rwerwer', '0', '2018-06-16 14:32:56', null);
-INSERT INTO `withdraw` VALUES ('2', '1', '34', '0', '34', '234', '234', '242', '234', '0', '2018-06-16 14:39:05', null);
+INSERT INTO `withdraw` VALUES ('1', '1', '3', '0', '3', 'werwer', 'werwer', '3wr23r23', 'rwerwer', '0', '2018-06-16 14:32:56', null, 'aa');
+INSERT INTO `withdraw` VALUES ('2', '1', '34', '0', '34', '234', '234', '242', '234', '0', '2018-06-16 14:39:05', null, null);
+INSERT INTO `withdraw` VALUES ('3', '1', '2342', '23', '2319', '45644364653634534', '何敏灿', '中国农业银行', '广西南宁东葛路', '0', '2018-06-17 16:13:20', null, '123456');
+INSERT INTO `withdraw` VALUES ('4', '1', '2', '0', '2', '45644364653634534', '何敏灿', '中国农业银行', '广西南宁东葛路', '0', '2018-06-18 11:58:21', null, '123456');
