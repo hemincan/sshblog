@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xrom.ssh.entity.ApplyGoods;
 import com.xrom.ssh.service.ApplyGoodsService;
 import com.xrom.ssh.util.Result;
 
@@ -17,9 +18,9 @@ public class ApplyGoodsController {
 
 	@RequestMapping("/findPage")
 	@ResponseBody
-	public Result findPage(@RequestParam(defaultValue = "0") int pageIndex,
+	public Result findPage(ApplyGoods applyGoods,@RequestParam(defaultValue = "0") int pageIndex,
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
-		return applyGoodsService.findPage(null, pageIndex, pageSize, orderBy);
+		return applyGoodsService.findPage(applyGoods, pageIndex, pageSize, orderBy);
 	}
 
 	@RequestMapping("/save")
@@ -30,7 +31,12 @@ public class ApplyGoodsController {
 		return applyGoodsService.save(agentTypeId,receiverAddress,
 				receiverName, receiverPhone);
 	}
+	@RequestMapping("/active")
+	@ResponseBody
+	public Result active(Integer id) {
 
+		return applyGoodsService.active(id);
+	}
 	@RequestMapping("/get")
 	@ResponseBody
 	public Result get(Integer id) {

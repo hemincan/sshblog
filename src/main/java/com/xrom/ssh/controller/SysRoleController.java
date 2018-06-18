@@ -14,29 +14,42 @@ import com.xrom.ssh.util.Result;
 @Controller
 @RequestMapping("/role")
 public class SysRoleController {
-	 @Autowired(required=true)
-	 private SysRoleService roleService;
-	 
-	 @RequestMapping("/findPage")
-	 @ResponseBody
-	 public Result findPage(@RequestParam(defaultValue = "0")int pageIndex,@RequestParam(defaultValue = "15")int pageSize,String orderBy){
-		 return roleService.findPage(null, pageIndex, pageSize, orderBy);
-	 }
-	 @RequestMapping("/saveOrUpdate")
-	 @ResponseBody
-	 public Result addRole(Integer id,String remark,String roleName,String sortOrder){
-		 
-		 return roleService.saveOrUpdateRole(id, remark, roleName, sortOrder);
-	 }
-	 @RequestMapping("/delete")
-	 @ResponseBody
-	 public Result deleteRole(Integer id){
-		 
-		 return roleService.deleteRole(id);
-	 }
-	 @RequestMapping("/get")
-	 @ResponseBody
-	 public Result getRole(Integer id){
-		 return roleService.getRole(id);
-	 }
+	@Autowired(required = true)
+	private SysRoleService roleService;
+
+	@RequestMapping("/findPage")
+	@ResponseBody
+	public Result findPage(@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return roleService.findPage(null, pageIndex, pageSize, orderBy);
+	}
+
+	@RequestMapping("/saveOrUpdate")
+	@ResponseBody
+	public Result addRole(Integer id, String remark, String roleName,
+			String sortOrder, String enName) {
+
+		return roleService.saveOrUpdateRole(id, remark, roleName, sortOrder,
+				enName);
+	}
+
+	@RequestMapping("/delete")
+	@ResponseBody
+	public Result deleteRole(Integer id) {
+
+		return roleService.deleteRole(id);
+	}
+
+	@RequestMapping("/get")
+	@ResponseBody
+	public Result getRole(Integer id) {
+		return roleService.getRole(id);
+	}
+
+	@RequestMapping("/addRoleToUser")
+	@ResponseBody
+	public Result addRoleToUser(Integer userId, String roleIds) {
+		// roleIds 以，隔开的数字
+		return roleService.addRoleToUser(userId, roleIds);
+	}
 }

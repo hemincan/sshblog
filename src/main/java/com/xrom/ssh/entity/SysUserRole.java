@@ -17,10 +17,10 @@ public class SysUserRole {
     private Integer id;
 	
 	@Column(name = "sys_user_id")
-	private String sysUserId;
+	private Integer sysUserId;
 	
 	@Column(name = "role_id")
-	private String roleId;
+	private Integer roleId;
 
 	public Integer getId() {
 		return id;
@@ -31,19 +31,19 @@ public class SysUserRole {
 	}
 
 
-	public String getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(String roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
-	public String getSysUserId() {
+	public Integer getSysUserId() {
 		return sysUserId;
 	}
 
-	public void setSysUserId(String sysUserId) {
+	public void setSysUserId(Integer sysUserId) {
 		this.sysUserId = sysUserId;
 	}
 	

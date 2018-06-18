@@ -52,7 +52,21 @@ public class Withdraw  {
 	
 	@Column(name = "declaration_center")
 	private String declarationCenter;
+	
+	@Column(name = "user_account")
+	private String userAccount;
 
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public void setBankUserName(String bankUserName) {
+		this.bankUserName = bankUserName;
+	}
 
 	public Integer getId() {
 		return this.id;

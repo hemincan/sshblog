@@ -82,6 +82,13 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
 		 session.flush();
 	}
 	
+	@Override
+	public void delete(T t) {
+		 Session session =getCurrentSession();
+		 Query q = session.createQuery("delete " + getAndQueryString(t));
+		 q.executeUpdate();
+		 session.flush();
+	}
 	
 	@Override
 	public void flush() {
@@ -143,6 +150,9 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
             		continue;
             	}
             	if(value instanceof java.lang.String){
+            		if(value.toString().replaceAll(" ", "").equals("")){
+            			continue;
+            		}
             		 value = "'" + value + "'";
             	}
             	list.add(" t." + f.getName() + "=" + value + " ");

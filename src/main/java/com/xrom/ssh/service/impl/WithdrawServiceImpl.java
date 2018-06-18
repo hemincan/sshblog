@@ -74,7 +74,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setBankCard(bankCard);
 		withdraw.setBankName(bankName);
 		withdraw.setBankUserNane(bankUserName);
-		
+		withdraw.setUserAccount(user.getAccountNumber());
 		withdrawRepository.save(withdraw);
 		return new Result<>("0", "提现申请已经提交，请等待！", null);
 	}

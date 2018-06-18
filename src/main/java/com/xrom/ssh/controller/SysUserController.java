@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class SysUserController {
 		try {
 			currentUser.login(token);
 			token.setRememberMe(true);
-			bounsService.caculateCollision();
+			
 			currentUser.getSession().setAttribute("account", account);
 		} catch (Exception e) {
 			// 返回登录时的错误信息
@@ -83,7 +84,7 @@ public class SysUserController {
 		return userService.getUserInfo();
 	}
 
-	
+	@RequiresRoles({"superadmin"})
 	@RequestMapping("/user/findAdminUserPage")
 	@ResponseBody
 	public Result findAdminUserPage(@RequestParam(defaultValue = "0") int pageIndex,

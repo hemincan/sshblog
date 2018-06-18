@@ -8,7 +8,9 @@ import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.dto.bonus.BonusInfo;
 import com.xrom.ssh.dto.integral.IntegralInfo;
@@ -40,7 +42,7 @@ public class BounsServiceImpl implements BounsService {
 	private AgentTreeRepository agentTreeRepository;
 	@Autowired
 	private AgentTypeRepository agentTypeRepository;
-	
+
 	@Override
 	public Result findPage(Bonus entity, int pageIndex, int pageSize,
 			String orderBy) {
@@ -54,8 +56,10 @@ public class BounsServiceImpl implements BounsService {
 			BonusInfo bonusInfo = new BonusInfo();
 			Bonus bonus = page.getResult().get(i);
 			BeanUtils.copyProperties(bonus, bonusInfo);
-			bonusInfo.setUserAccount(user.getAccountNumber());
-			bonusInfo.setUserName(user.getUserName());
+			if (user != null) {
+				bonusInfo.setUserAccount(user.getAccountNumber());
+				bonusInfo.setUserName(user.getUserName());
+			}
 			result.add(bonusInfo);
 		}
 		Page<BonusInfo> page2 = new Page<>(page.getPageSize(),
@@ -96,72 +100,74 @@ public class BounsServiceImpl implements BounsService {
 		return new Result<>("0", "获取成功", integralRepository.get(id));
 	}
 
-	/*
-	 * 计算对碰奖
-	 */
-	@Override
-	public void caculateCollision() {
-		Calendar now = Calendar.getInstance();
-		// System.out.println("年: " + now.get(Calendar.YEAR));
-		// System.out.println("月: " + (now.get(Calendar.MONTH) + 1) + "");
-		// System.out.println("日: " + now.get(Calendar.DAY_OF_MONTH));
-		// System.out.println("时: " + now.get(Calendar.HOUR_OF_DAY));
-		// System.out.println("分: " + now.get(Calendar.MINUTE));
-		// System.out.println("秒: " + now.get(Calendar.SECOND));
-		Integer day = now.get(Calendar.DAY_OF_MONTH);
-		System.out.println(day);
-//		if (day == 8 || day == 18 || day == 28) {
-		if(true){
-			//计算对碰
-			Integer userId = (Integer) SecurityUtils.getSubject().getSession()
-					.getAttribute("userId");
-			SysUser user = userRepository.get(userId);
-			AgentTree agentTree = agentTreeRepository.getByUserId(userId);
-			Integer left = agentTree.getLeftPerformance();
-			Integer right = agentTree.getRightPerformance();
-			left = left==null?0:left;
-			right = right==null?0:right;
-			Integer money = 0;
-			if(left<right){
-				agentTree.setLeftPerformance(0);
-				agentTree.setRightPerformance(right-left);
-				money=left;
-			}else {
-				agentTree.setLeftPerformance(left-right);
-				agentTree.setRightPerformance(0);
-				money=right;
-			}
-			
-			
-			agentTreeRepository.saveOrUpdate(agentTree);
-			
-			//money就是可以用来计算的钱
-			
-			AgentType agentType = agentTypeRepository.get(user.getAgentTypeId());
-			
-			money = (int) Math.round(money *agentType.getCollisionPer());
-			if(money>agentType.getTopReward()){
-				money = agentType.getTopReward();
-			}
-			// 发奖金
-			Bonus bonus = new Bonus();
-			bonus.setBonusType("对碰奖金");
-			bonus.setObtainDate(new Date());
-			bonus.setUserId(userId);
-	
-			bonus.setMoney(money);
-//			bonus.setAgentAccount(user.getAccountNumber());
-//			bonus.setAgentName(user.getUserName());
-			bonus.setState(1);// 这个代理金未经过审核，并不是真的获得了代理金
-			bonusRepository.saveOrUpdate(bonus);
-			
-			if(user.getBalance()==null){
-				user.setBalance(0);
-			}
-			user.setBalance(user.getBalance()+money);
-			userRepository.save(user);
-			
-		}
-	}
+//	/*
+//	 * 计算对碰奖
+//	 */
+//	@Scheduled(cron="1/10 * * * * ?") // 每天早上三点执行s
+//	@Override
+//	public void caculateCollision() {
+//		Calendar now = Calendar.getInstance();
+//		// System.out.println("年: " + now.get(Calendar.YEAR));
+//		// System.out.println("月: " + (now.get(Calendar.MONTH) + 1) + "");
+//		// System.out.println("日: " + now.get(Calendar.DAY_OF_MONTH));
+//		// System.out.println("时: " + now.get(Calendar.HOUR_OF_DAY));
+//		// System.out.println("分: " + now.get(Calendar.MINUTE));
+//		// System.out.println("秒: " + now.get(Calendar.SECOND));
+//		Integer day = now.get(Calendar.DAY_OF_MONTH);
+//		System.out.println(day);
+////		day == 8 || day == 18 || day == 28
+//		if (true) {
+//			// 计算对碰
+//			List<SysUser> userlist = userRepository.findAll();
+//			for (int i = 0; i < userlist.size(); i++) {
+//				Integer userId = userlist.get(i).getId();
+//				SysUser user = userRepository.get(userId);
+//				AgentTree agentTree = agentTreeRepository.getByUserId(userId);
+//				Integer left = agentTree.getLeftPerformance();
+//				Integer right = agentTree.getRightPerformance();
+//				left = left == null ? 0 : left;
+//				right = right == null ? 0 : right;
+//				Integer money = 0;
+//				if (left < right) {
+//					agentTree.setLeftPerformance(0);
+//					agentTree.setRightPerformance(right - left);
+//					money = left;
+//				} else {
+//					agentTree.setLeftPerformance(left - right);
+//					agentTree.setRightPerformance(0);
+//					money = right;
+//				}
+//
+//				agentTreeRepository.saveOrUpdate(agentTree);
+//
+//				// money就是可以用来计算的钱
+//
+//				AgentType agentType = agentTypeRepository.get(user
+//						.getAgentTypeId());
+//
+//				money = (int) Math.round(money * agentType.getCollisionPer());
+//				if (money > agentType.getTopReward()) {
+//					money = agentType.getTopReward();
+//				}
+//				// 发奖金
+//				Bonus bonus = new Bonus();
+//				bonus.setBonusType("对碰奖金");
+//				bonus.setObtainDate(new Date());
+//				bonus.setUserId(userId);
+//
+//				bonus.setMoney(money);
+//				// bonus.setAgentAccount(user.getAccountNumber());
+//				// bonus.setAgentName(user.getUserName());
+//				bonus.setState(1);// 这个代理金未经过审核，并不是真的获得了代理金
+//				bonusRepository.saveOrUpdate(bonus);
+//
+//				if (user.getBalance() == null) {
+//					user.setBalance(0);
+//				}
+//				user.setBalance(user.getBalance() + money);
+//				userRepository.save(user);
+//			}
+//		}
+//	}
 
 }

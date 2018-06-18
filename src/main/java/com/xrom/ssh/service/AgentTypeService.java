@@ -9,10 +9,13 @@ public interface AgentTypeService {
 
 	Result get(Integer id);
 
-	Result saveOrUpdateRole(Integer id, Integer ableCount, Integer integral,
-			String name, Integer totalMoney);
 
 	Result findPage(AgentType entity, int pageIndex, int pageSize,
 			String orderBy);
+
+
+	Result saveOrUpdate(Integer id, Integer ableCount, Integer integral,
+			String name, Integer totalMoney, Double collisionPer,
+			Integer firstRewardMoney, String remark, Integer topReward);
 
 }

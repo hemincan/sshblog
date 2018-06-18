@@ -30,4 +30,6 @@ public interface DomainRepository<T> {
 
 	List<T> queryByEntity(T entity);
 
+	void delete(T t);
+
 }

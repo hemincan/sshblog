@@ -14,4 +14,6 @@ public interface ApplyGoodsService {
 	Result save(Integer agentTypeId, String receiverAddress,
 			String receiverName, String receiverPhone);
 
+	Result active(Integer id);
+
 }

@@ -19,6 +19,9 @@ public class SysRole {
 	@Column(name = "role_name")
 	private String roleName;
 	
+	@Column(name = "en_name")
+	private String enName;
+	
 	@Column(name = "remark")
 	private String remark;
 	
@@ -55,6 +58,14 @@ public class SysRole {
 
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public String getEnName() {
+		return enName;
+	}
+
+	public void setEnName(String enName) {
+		this.enName = enName;
 	}
 	
 	

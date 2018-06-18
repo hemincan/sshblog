@@ -15,6 +15,7 @@ public interface BounsService{
 
 	Result getIntegral(Integer id);
 
-	void caculateCollision();
+
+	
 
 }

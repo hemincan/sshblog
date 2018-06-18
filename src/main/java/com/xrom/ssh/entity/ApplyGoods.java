@@ -48,12 +48,31 @@ public class ApplyGoods {
 	@Column(name = "remark")
 	private String remark;
 	
+	@Column(name = "user_account")
+	private String userAccount;
+	
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Date getApplyDate() {
+		return applyDate;
+	}
+
+	public void setApplyDate(Date applyDate) {
+		this.applyDate = applyDate;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	public Integer getUserId() {
@@ -64,9 +83,6 @@ public class ApplyGoods {
 		this.userId = userId;
 	}
 
-	public Date getapplyDate() {
-		return applyDate;
-	}
 
 	public String getRemark() {
 		return remark;
