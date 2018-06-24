@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.jmx.Agent;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xrom.ssh.dto.applygoods.ApplyGoodsInfo;
-import com.xrom.ssh.dto.withdraw.WithdrawInfo;
 import com.xrom.ssh.entity.AgentTree;
 import com.xrom.ssh.entity.AgentType;
 import com.xrom.ssh.entity.ApplyGoods;
 import com.xrom.ssh.entity.Bonus;
 import com.xrom.ssh.entity.Integral;
+import com.xrom.ssh.entity.PretreatmentAgent;
 import com.xrom.ssh.entity.SysUser;
-import com.xrom.ssh.entity.Withdraw;
 import com.xrom.ssh.repository.AgentTreeRepository;
 import com.xrom.ssh.repository.AgentTypeRepository;
 import com.xrom.ssh.repository.ApplyGoodsRepository;
 import com.xrom.ssh.repository.BonusRepository;
 import com.xrom.ssh.repository.IntegralRepository;
+import com.xrom.ssh.repository.PretreatmentAgentRepository;
 import com.xrom.ssh.repository.SysUserRepository;
+import com.xrom.ssh.service.AgentTreeService;
 import com.xrom.ssh.service.ApplyGoodsService;
 import com.xrom.ssh.util.Page;
 import com.xrom.ssh.util.Result;
@@ -42,6 +44,11 @@ public class ApplyGoodsServiceImpl implements ApplyGoodsService {
 	private IntegralRepository integralRepository;
 	@Autowired
 	private AgentTreeRepository agentTreeRepository;
+	@Autowired
+	private PretreatmentAgentRepository pretreatmentAgentRepository;
+
+	@Autowired
+	private AgentTreeService agentTreeService;
 
 	@Override
 	public Result findPage(ApplyGoods entity, int pageIndex, int pageSize,
@@ -56,17 +63,31 @@ public class ApplyGoodsServiceImpl implements ApplyGoodsService {
 			ApplyGoodsInfo bonusInfo = new ApplyGoodsInfo();
 			ApplyGoods bonus = page.getResult().get(i);
 			BeanUtils.copyProperties(bonus, bonusInfo);
-			if(user!=null){
+			if (user != null) {
 				bonusInfo.setUserAccount(user.getAccountNumber());
 				bonusInfo.setUserName(user.getUserName());
 			}
-			
+
 			result.add(bonusInfo);
 		}
 		Page<ApplyGoodsInfo> page2 = new Page<>(page.getPageSize(),
 				page.getTotalCount(), page.getPageNum());
 		page2.setResult(result);
 		return new Result<>("0", "获取成功", page2);
+	}
+
+	@Override
+	public Result findPageUser(ApplyGoods entity, int pageIndex, int pageSize,
+			String orderBy) {
+
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		ApplyGoods entity2 = new ApplyGoods();
+		entity2.setUserId(userId);
+		Page<ApplyGoods> page = applyGoodsRepository.findPage(entity2,
+				pageIndex, pageSize, orderBy);
+
+		return new Result<>("0", "获取成功", page);
 	}
 
 	@Override
@@ -88,6 +109,33 @@ public class ApplyGoodsServiceImpl implements ApplyGoodsService {
 		entity.setGoodsType(type.getName());
 		entity.setTotalMoney(type.getTotalMoney());
 		entity.setRemark(type.getRemark());
+		entity.setAgentTypeId(agentTypeId);
+
+		applyGoodsRepository.saveOrUpdate(entity);
+
+		
+
+		return new Result<ApplyGoods>("0", "操作成功！", entity);
+	}
+
+	@Override
+	public Result saveToUser(SysUser user, Integer agentTypeId,
+			String receiverAddress, String receiverName, String receiverPhone) {
+
+		ApplyGoods entity = new ApplyGoods();
+		entity.setUserId(user.getId());
+		entity.setapplyDate(new Date());
+		entity.setReceiverAddress(receiverAddress);
+		entity.setReceiverName(receiverName);
+		entity.setReceiverPhone(receiverPhone);
+		entity.setState(0);
+		entity.setUserAccount(user.getAccountNumber());
+		AgentType type = agentTypeRepository.get(agentTypeId);
+		entity.setGoodsCount(type.getAbleCount());
+		entity.setGoodsType(type.getName());
+		entity.setTotalMoney(type.getTotalMoney());
+		entity.setRemark(type.getRemark());
+		entity.setAgentTypeId(agentTypeId);
 
 		applyGoodsRepository.saveOrUpdate(entity);
 
@@ -102,28 +150,52 @@ public class ApplyGoodsServiceImpl implements ApplyGoodsService {
 	@Override
 	public Result active(Integer id) {
 		ApplyGoods entity = applyGoodsRepository.get(id);
+		if (entity.getState() != 0) {
+			// 已经确认过了
+			return new Result<>();
+		}
 		entity.setState(1);// 已经确认付钱
 		applyGoodsRepository.saveOrUpdate(entity);
 
-		// /////////每添加一个代理，对于直接代理来说，将获得奖金//////////////////
-		// ////////////////////////////////////////////////////////
 		Integer userId = entity.getUserId();
 		SysUser user = sysUserRepository.get(userId);
-		Integer agentTypeId = user.getAgentTypeId();
-		AgentType agentType = agentTypeRepository.get(agentTypeId);
-		if(user.getRecommendUserId()!=null&&user.getRecommendUserId()!=0){
+		if (user.getIsActivate() == false) {
+			// 报单确认后再把用户放进用户树
+			PretreatmentAgent pretreatmentAgent = pretreatmentAgentRepository
+					.getByUserId(userId);
+			Integer parentUserIdsss = pretreatmentAgent.getTreeParentUserId();
+			SysUser parentUsersss = sysUserRepository.get(parentUserIdsss);
+			agentTreeService.saveInAgentTree(pretreatmentAgent.getPosition(),
+					parentUsersss, user);
+			user.setIsActivate(true);
+			sysUserRepository.save(user);
+		}
+
+		// /////////每添加一个代理，对于直接代理来说，将获得奖金//////////////////
+		// ////////////////////////////////////////////////////////
+
+		AgentType agentType = agentTypeRepository.get(entity.getAgentTypeId());
+		if (user.getRecommendUserId() != null && user.getRecommendUserId() != 0) {
 
 			Bonus bonus = new Bonus();
 			bonus.setBonusType("推荐代理奖金");
 			bonus.setObtainDate(new Date());
 			bonus.setUserId(user.getRecommendUserId());// 直接推荐人的
-			
+
 			bonus.setMoney(agentType.getFirstRewardMoney());
 			bonus.setAgentAccount(user.getAccountNumber());
 			bonus.setAgentName(user.getUserName());
-			bonus.setState(1);// 这个代理金未经过审核，并不是真的获得了代理金
+			bonus.setState(1);
 			bonusRepository.saveOrUpdate(bonus);
-			
+
+			// 保存到用户的余额
+			SysUser recommendUser = sysUserRepository.get(user
+					.getRecommendUserId());
+			Integer banance = recommendUser.getBalance();
+			banance = banance == null ? 0 : banance;
+			banance += agentType.getFirstRewardMoney();
+			recommendUser.setBalance(banance);
+			sysUserRepository.saveOrUpdate(recommendUser);
 		}
 		// ////////////////////////////////////////////////////////
 		// ////// //////////
@@ -137,13 +209,16 @@ public class ApplyGoodsServiceImpl implements ApplyGoodsService {
 				agentTree.setUserId(userId);
 				agentTree.setLeftPerformance(0);
 				agentTree.setRightPerformance(0);
+				agentTree.setParentUserId(agentTreeRepository
+						.getMyParentId(userId));
 				agentTreeRepository.save(agentTree);
+
 			}
 			List<SysUser> userList = new ArrayList<>();
-			// userList.add(user);//他自己有积分
+			userList.add(user);// 他自己有积分
 			Integer parentUserId = agentTree.getParentUserId();
 			while (true) {
-				if (parentUserId == null) {
+				if (parentUserId == null || parentUserId == 0) {
 					break;
 				}
 				SysUser parentUser = sysUserRepository.get(parentUserId);

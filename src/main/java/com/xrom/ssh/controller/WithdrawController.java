@@ -1,5 +1,6 @@
 package com.xrom.ssh.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +18,18 @@ public class WithdrawController {
 	@Autowired
 	private WithdrawService withdrawService;
 
+	 @RequiresRoles(value={"admin"})
 	@RequestMapping("/findPage")
 	@ResponseBody
 	public Result findPage(Withdraw withdraw,@RequestParam(defaultValue = "0") int pageIndex,
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
 		return withdrawService.findPage(withdraw, pageIndex, pageSize, orderBy);
+	}
+	@RequestMapping("/findPageUser")
+	@ResponseBody
+	public Result findPageUser(Withdraw withdraw,@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return withdrawService.findPageUser(withdraw, pageIndex, pageSize, orderBy);
 	}
 
 	@RequestMapping("/get")

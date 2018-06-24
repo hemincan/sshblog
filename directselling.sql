@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2018-06-18 16:44:06
+Date: 2018-06-21 20:12:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `apply_goods` (
   `remark` varchar(255) DEFAULT NULL,
   `user_account` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of apply_goods
@@ -99,6 +99,7 @@ INSERT INTO `apply_goods` VALUES ('11', '32', '2018-06-16 21:15:10', '一级代�
 INSERT INTO `apply_goods` VALUES ('12', '1', '2018-06-17 16:02:30', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
 INSERT INTO `apply_goods` VALUES ('13', '1', '2018-06-17 16:15:57', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
 INSERT INTO `apply_goods` VALUES ('14', '1', '2018-06-18 11:57:45', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '1', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
+INSERT INTO `apply_goods` VALUES ('15', '1', '2018-06-20 22:07:53', '一级代理', '50', '2990', '何敏灿', '13445677665', '广西南宁横县莲塘', '0', '送4瓶洗发水+围布+手套+喷壳+吹风', '123456');
 
 -- ----------------------------
 -- Table structure for bonus
@@ -253,12 +254,12 @@ CREATE TABLE `sys_user` (
   `integral` int(11) DEFAULT NULL,
   `is_admin` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123', '2018-06-10 01:16:09', '1', '2018-06-18 13:49:03', '456755544333345', '13445677665', '23455@22.com', '10278723734', '广西南宁横县莲塘', '45644364653634534', '中国农业银行', null, '广西南宁东葛路', '0', null, '1', '1', '5362', '2200', '1');
+INSERT INTO `sys_user` VALUES ('1', '123456', '何敏灿', '123', '2018-06-10 01:16:09', '1', '2018-06-20 23:00:43', '456755544333345', '13445677665', '23455@22.com', '10278723734', '广西南宁横县莲塘', '45644364653634534', '中国农业银行', null, '广西南宁东葛路', '0', null, '1', '1', '5362', '2200', '1');
 INSERT INTO `sys_user` VALUES ('2', '9482427', '2342342', '235235', '2018-06-13 22:02:38', '1', null, '5235235', '253', null, '25323', null, null, null, null, null, '1', null, '1', '1', '0', null, null);
 INSERT INTO `sys_user` VALUES ('3', '4046828', '2343', '4234234', '2018-06-12 20:34:00', '1', '2018-06-12 20:34:00', '423423', '234234', null, '234', null, null, null, '2343', null, '1', '666666', '1', '1', '0', '6600', null);
 INSERT INTO `sys_user` VALUES ('4', '7489642', '23423', '4234234', '2018-06-12 20:39:28', '1', '2018-06-12 20:39:28', '423423', '234234', null, '234234', null, null, null, '23423', null, '1', '666666', '1', '1', '0', null, null);

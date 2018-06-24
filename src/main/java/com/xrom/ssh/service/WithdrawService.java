@@ -12,4 +12,7 @@ public interface WithdrawService {
 	Result save(Integer withdrawMoney, String bankName, String bankAddress,
 			String bankCard, String bankUserName);
 
+	Result findPageUser(Withdraw entity, int pageIndex, int pageSize,
+			String orderBy);
+
 }

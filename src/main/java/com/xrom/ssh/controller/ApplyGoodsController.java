@@ -1,5 +1,6 @@
 package com.xrom.ssh.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +16,19 @@ import com.xrom.ssh.util.Result;
 public class ApplyGoodsController {
 	@Autowired
 	private ApplyGoodsService applyGoodsService;
-
+	@RequiresRoles(value={"admin"})
 	@RequestMapping("/findPage")
 	@ResponseBody
 	public Result findPage(ApplyGoods applyGoods,@RequestParam(defaultValue = "0") int pageIndex,
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
 		return applyGoodsService.findPage(applyGoods, pageIndex, pageSize, orderBy);
 	}
-
+	@RequestMapping("/findPageUser")
+	@ResponseBody
+	public Result findPageUser(ApplyGoods applyGoods,@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return applyGoodsService.findPageUser(applyGoods, pageIndex, pageSize, orderBy);
+	}
 	@RequestMapping("/save")
 	@ResponseBody
 	public Result add(Integer agentTypeId,
@@ -31,6 +37,7 @@ public class ApplyGoodsController {
 		return applyGoodsService.save(agentTypeId,receiverAddress,
 				receiverName, receiverPhone);
 	}
+	@RequiresRoles(value={"admin"})
 	@RequestMapping("/active")
 	@ResponseBody
 	public Result active(Integer id) {

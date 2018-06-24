@@ -15,6 +15,12 @@ public interface BounsService{
 
 	Result getIntegral(Integer id);
 
+	Result findPageUser(Bonus entity, int pageIndex, int pageSize,
+			String orderBy);
+
+	Result findIntegralPageUser(Integral entity, int pageIndex, int pageSize,
+			String orderBy);
+
 
 	
 

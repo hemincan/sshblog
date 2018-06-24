@@ -48,7 +48,17 @@ public class WithdrawServiceImpl implements WithdrawService {
 		page2.setResult(result);
 		return new Result<>("0", "获取成功", page2);
 	}
-
+	@Override
+	public Result findPageUser(Withdraw entity, int pageIndex, int pageSize,
+			String orderBy) {
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		Withdraw entity2 = new Withdraw();
+		entity2.setUserId(userId);
+		Page<Withdraw> page = withdrawRepository.findPage(entity2, pageIndex,
+				pageSize, orderBy);
+		return new Result<>("0", "获取成功", page);
+	}
 	@Override
 	public Result get(Integer id) {
 		return new Result<>("0", "获取成功", withdrawRepository.get(id));

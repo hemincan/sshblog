@@ -36,7 +36,8 @@ public class TimedTask {
 		Integer day = now.get(Calendar.DAY_OF_MONTH);
 		System.out.println("自动任务"+day);
 		
-		if (day == 8 || day == 18 || day == 28) {
+//		if (day == 8 || day == 18 || day == 28) {
+		if(true){//先改成每天碰一次
 			System.out.println("计算对碰");
 			// 计算对碰
 			Session session = sessionFactory.openSession();

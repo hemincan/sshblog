@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
+
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +17,19 @@ import org.springframework.stereotype.Service;
 import com.xrom.ssh.dto.user.AdminUserInfo;
 import com.xrom.ssh.dto.user.UserInfoDTO;
 import com.xrom.ssh.entity.AgentTree;
+import com.xrom.ssh.entity.PretreatmentAgent;
 import com.xrom.ssh.entity.SysRole;
 import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.entity.SysUserRole;
 import com.xrom.ssh.repository.AgentTreeRepository;
 import com.xrom.ssh.repository.AgentTypeRepository;
 import com.xrom.ssh.repository.BonusRepository;
+import com.xrom.ssh.repository.PretreatmentAgentRepository;
 import com.xrom.ssh.repository.SysRoleRepository;
 import com.xrom.ssh.repository.SysUserRepository;
 import com.xrom.ssh.repository.SysUserRoleRepository;
+import com.xrom.ssh.service.AgentTreeService;
+import com.xrom.ssh.service.ApplyGoodsService;
 import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Page;
 import com.xrom.ssh.util.Result;
@@ -46,6 +52,14 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysRoleRepository sysRoleRepository;
+	@Autowired
+	private PretreatmentAgentRepository pretreatmentAgentRepository;
+	
+	@Autowired
+	private ApplyGoodsService applyGoodsService;
+	
+	@Autowired
+	private AgentTreeService agentTreeService;
 	@Override
 	public Result<SysUser> login(String account, String password) {
 		if (account == null || password == null) {
@@ -81,7 +95,7 @@ public class SysUserServiceImpl implements SysUserService {
 		user.setLastLoginTime(new Date());
 		user.setRegisterTime(new Date());
 		user.setRealName(userName);
-		user.setIsActivate(true);
+		user.setIsActivate(false);
 		user.setSecondPassword("666666");
 		user.setAddress(address);
 		user.setBalance(0);
@@ -95,90 +109,32 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 		user.setAccountNumber(account.toString());
 		userRepository.save(user);
-
-		if (treeParentAccount != null) {
-			// 保存至用户数
-			SysUser treeParentUser = userRepository
-					.getByAccount(treeParentAccount);
-			AgentTree agentTree = new AgentTree();
-			agentTree.setLeftPerformance(0);
-			agentTree.setRightPerformance(0);
-			agentTree.setParentUserId(treeParentUser.getId());
-			agentTree.setUserId(user.getId());
-			agentTreeRepository.save(agentTree);
-			// 保存至的treeParentAccount的孩子
-			AgentTree parentTree = agentTreeRepository
-					.getByUserId(treeParentUser.getId());
-			if (parentTree == null) {
-				parentTree = new AgentTree();
-				parentTree.setUserId(treeParentUser.getId());
-			}
-			if ("left".equals(position)) {
-				parentTree.setLeftUserId(user.getId());
-			} else {
-				parentTree.setRightUserId(user.getId());
-			}
-			agentTreeRepository.saveOrUpdate(parentTree);
-
-		} else {
-			// 如果父亲节点是空，就只能在指定的方向找一个空的结点来添加代理
-			AgentTree agentTree = agentTreeRepository.getByUserId(recommUser
-					.getId());// 获取推荐人的树的数据
-			if (agentTree == null) {
-				// 新建一个树
-				agentTree = new AgentTree();
-				agentTree.setLeftPerformance(0);
-				agentTree.setRightPerformance(0);
-				agentTree.setUserId(recommUser.getId());
-				agentTree.setParentUserId(0);
-				agentTreeRepository.save(agentTree);// 保存之后agentTree也会被保存有ID等属性值
-			}
-			if ("left".equals(position)) {
-				if (agentTree.getLeftUserId() == null) {
-					agentTree.setLeftUserId(user.getId());
-					agentTreeRepository.saveOrUpdate(agentTree);
-				} else {
-					// 随便找个左边的树的空位置放进去
-					saveInEmptyNode(agentTree.getLeftUserId(), user.getId());
-				}
-			} else {
-				if (agentTree.getRightUserId() == null) {
-					agentTree.setRightUserId(user.getId());
-					agentTreeRepository.saveOrUpdate(agentTree);
-				} else {
-					// 随便找个右边的树的空位置放进去
-					saveInEmptyNode(agentTree.getRightUserId(), user.getId());
-				}
-			}
+		
+		// 提交代理时顺便把订单提上
+		applyGoodsService.saveToUser(user,agentTypeId, address, userName, phone);
+		///
+		
+		//保存至预受理用户
+		PretreatmentAgent pretreatmentAgent = new PretreatmentAgent();
+		if("left".equals(position)){
+			pretreatmentAgent.setPosition("left");
+		}else{
+			pretreatmentAgent.setPosition("right");
 		}
-
+		pretreatmentAgent.setState(0);
+		if(treeParentAccount!=null){
+			SysUser treeParentUser = userRepository.getByAccount(treeParentAccount);
+			pretreatmentAgent.setTreeParentUserId(treeParentUser.getId());
+		}else{
+			pretreatmentAgent.setTreeParentUserId(recommUser.getId());
+		}
+		pretreatmentAgent.setUserId(user.getId());
+		pretreatmentAgentRepository.save(pretreatmentAgent);
+		
 		return new Result<>("0", "注册成功", user);
 	}
 
-	private void saveInEmptyNode(Integer userId, Integer putUserId) {
-		AgentTree agentTree = agentTreeRepository.getByUserId(userId);
-		// 新建一个树
-		agentTree = new AgentTree();
-		agentTree.setLeftPerformance(0);
-		agentTree.setRightPerformance(0);
-		agentTree.setUserId(userId);
-		agentTreeRepository.save(agentTree);// 保存之后agentTree也会被保存有ID等属性值
-		Boolean stop = false;
-		while (stop == false) {
-			if (agentTree.getLeftUserId() == null) {
-				agentTree.setLeftUserId(putUserId);
-				agentTreeRepository.saveOrUpdate(agentTree);
-				stop = true;
-			} else if (agentTree.getRightUserId() == null) {
-				agentTree.setRightUserId(putUserId);
-				agentTreeRepository.saveOrUpdate(agentTree);
-				stop = true;
-			}
-			// 一直放在左边
-			agentTree = agentTreeRepository.getByUserId(agentTree
-					.getLeftUserId());
-		}
-	}
+	
 
 	@Override
 	public Result alertPassword(String account, String oldPassword,

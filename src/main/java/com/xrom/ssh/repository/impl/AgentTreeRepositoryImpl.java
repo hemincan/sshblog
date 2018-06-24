@@ -22,4 +22,22 @@ public class AgentTreeRepositoryImpl extends CommonRepositoryImpl<AgentTree>
 		return null;
 	}
 
+	@Override
+	public Integer getMyParentId(Integer myId) {
+		AgentTree agentTree = new AgentTree();
+		agentTree.setLeftUserId(myId);
+		List<AgentTree> list = this.queryByEntity(agentTree);
+		if (list != null && !list.isEmpty()) {
+			return list.get(0).getUserId();
+		}
+		
+		agentTree = new AgentTree();
+		agentTree.setRightUserId(myId);
+		list = this.queryByEntity(agentTree);
+		if (list != null && !list.isEmpty()) {
+			return list.get(0).getUserId();
+		}
+		return 0;
+	}
+
 }

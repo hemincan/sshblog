@@ -67,7 +67,16 @@ public class BounsServiceImpl implements BounsService {
 		page2.setResult(result);
 		return new Result<>("0", "获取成功", page2);
 	}
-
+	@Override
+	public Result findPageUser(Bonus entity, int pageIndex, int pageSize,
+			String orderBy) {
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		Bonus entity2= new Bonus();
+		entity2.setUserId(userId);
+		Page<Bonus> page = bonusRepository.findPage(entity2, pageIndex, pageSize, orderBy);
+		return new Result<>("0", "获取成功", page);
+	}
 	@Override
 	public Result get(Integer id) {
 		return new Result<>("0", "获取成功", bonusRepository.get(id));
@@ -94,7 +103,18 @@ public class BounsServiceImpl implements BounsService {
 		page2.setResult(result);
 		return new Result<>("0", "获取成功", page2);
 	}
-
+	@Override
+	public Result findIntegralPageUser(Integral entity, int pageIndex,
+			int pageSize, String orderBy) {
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		Integral entity2= new Integral();
+		entity2.setUserId(userId);
+		Page<Integral> page = integralRepository.findPage(entity2, pageIndex,
+				pageSize, orderBy);
+		
+		return new Result<>("0", "获取成功", page);
+	}
 	@Override
 	public Result getIntegral(Integer id) {
 		return new Result<>("0", "获取成功", integralRepository.get(id));

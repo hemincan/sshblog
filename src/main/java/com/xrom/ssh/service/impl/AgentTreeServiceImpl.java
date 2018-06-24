@@ -134,4 +134,112 @@ public class AgentTreeServiceImpl implements AgentTreeService {
 		
 		return dto;
 	}
+	/**
+	 * 保存至用户树的结构，之后就可以进行对碰奖金的统计
+	 */
+	@Override
+	public void saveInAgentTree(String position,SysUser parentUser,SysUser user){
+		//放在parentUser的Position这边
+
+//		if (treeParentAccount != null) {
+//			// 保存至用户数
+//			SysUser treeParentUser = userRepository
+//					.getByAccount(treeParentAccount);
+//			AgentTree agentTree = new AgentTree();
+//			agentTree.setLeftPerformance(0);
+//			agentTree.setRightPerformance(0);
+//			agentTree.setParentUserId(treeParentUser.getId());
+//			agentTree.setUserId(user.getId());
+//			agentTreeRepository.save(agentTree);
+//			// 保存至的treeParentAccount的孩子
+//			AgentTree parentTree = agentTreeRepository
+//					.getByUserId(treeParentUser.getId());
+//			if (parentTree == null) {
+//				parentTree = new AgentTree();
+//				parentTree.setUserId(treeParentUser.getId());
+//			}
+//			if ("left".equals(position)) {
+//				parentTree.setLeftUserId(user.getId());
+//			} else {
+//				parentTree.setRightUserId(user.getId());
+//			}
+//			agentTreeRepository.saveOrUpdate(parentTree);
+//
+//		} else {
+			// 如果父亲节点是空，就只能在指定的方向找一个空的结点来添加代理
+			AgentTree agentTree = agentTreeRepository.getByUserId(parentUser
+					.getId());// 获取推荐人的树的数据
+			if (agentTree == null) {
+				// 新建一个树
+				agentTree = new AgentTree();
+				agentTree.setLeftPerformance(0);
+				agentTree.setRightPerformance(0);
+				agentTree.setUserId(parentUser.getId());
+				agentTree.setParentUserId(0);
+				agentTreeRepository.save(agentTree);// 保存之后agentTree也会被保存有ID等属性值
+			}
+			if ("left".equals(position)) {
+				if (agentTree.getLeftUserId() == null) {
+					agentTree.setLeftUserId(user.getId());
+					agentTreeRepository.saveOrUpdate(agentTree);
+				} else {
+					// 随便找个左边的树的空位置放进去
+					saveInEmptyNode(agentTree.getLeftUserId(), user.getId());
+				}
+			} else {
+				if (agentTree.getRightUserId() == null) {
+					agentTree.setRightUserId(user.getId());
+					agentTreeRepository.saveOrUpdate(agentTree);
+				} else {
+					// 随便找个右边的树的空位置放进去
+					saveInEmptyNode(agentTree.getRightUserId(), user.getId());
+				}
+			}
+//		}
+	}
+	
+	private void saveInEmptyNode(Integer userId, Integer putUserId) {
+		AgentTree agentTree = agentTreeRepository.getByUserId(userId);
+		if(agentTree==null){
+			// 新建一个树
+			agentTree = new AgentTree();
+			agentTree.setLeftPerformance(0);
+			agentTree.setRightPerformance(0);
+			agentTree.setUserId(userId);
+			agentTree.setParentUserId(agentTreeRepository.getMyParentId(userId));
+			agentTreeRepository.save(agentTree);// 保存之后agentTree也会被保存有ID等属性值
+		}
+		Boolean stop = false;
+		Integer treeUserId = 0;
+		while (stop == false) {
+			if (agentTree.getLeftUserId() == null) {
+				agentTree.setLeftUserId(putUserId);
+				agentTreeRepository.saveOrUpdate(agentTree);
+				stop = true;
+			} else if (agentTree.getRightUserId() == null) {
+				agentTree.setRightUserId(putUserId);
+				agentTreeRepository.saveOrUpdate(agentTree);
+				stop = true;
+			}else {
+				// 一直放在左边
+			    treeUserId = agentTree.getLeftUserId();
+				Integer parentUserId=agentTree.getUserId();
+				agentTree = agentTreeRepository.getByUserId(agentTree
+						.getLeftUserId());
+				if(agentTree==null){
+					// 新建一个树
+					agentTree = new AgentTree();
+					agentTree.setLeftPerformance(0);
+					agentTree.setRightPerformance(0);
+					agentTree.setUserId(treeUserId);
+					agentTree.setLeftUserId(putUserId);
+					agentTree.setParentUserId(parentUserId);
+					agentTreeRepository.save(agentTree);// 保存之后agentTree也会被保存有ID等属性值
+					break;
+				}
+			}
+		}
+		
+		
+	}
 }

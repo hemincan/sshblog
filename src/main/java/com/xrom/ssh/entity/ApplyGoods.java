@@ -51,6 +51,18 @@ public class ApplyGoods {
 	@Column(name = "user_account")
 	private String userAccount;
 	
+	@Column(name = "agent_type_id")
+	private Integer agentTypeId;
+	
+	
+	public Integer getAgentTypeId() {
+		return agentTypeId;
+	}
+
+	public void setAgentTypeId(Integer agentTypeId) {
+		this.agentTypeId = agentTypeId;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -20,6 +20,9 @@ public class ShiroConfig {
 		// 拦截器
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 		filterChainDefinitionMap.put("/user/login", "anon");// 允许登录匿名访问
+		filterChainDefinitionMap.put("/index.jsp", "anon");// 允许登录匿名访问
+		filterChainDefinitionMap.put("/index.html", "anon");// 允许登录匿名访问
+		filterChainDefinitionMap.put("/static/**", "anon");// 允许登录匿名访问
 		filterChainDefinitionMap.put("/**", "authc");
 //		filterChainDefinitionMap.put("/**", "anon");
 		//下面这个无效，加了也不跳转，只能在springmvc里面做异常拦截
