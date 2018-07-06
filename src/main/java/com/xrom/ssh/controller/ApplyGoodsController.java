@@ -31,7 +31,7 @@ public class ApplyGoodsController {
 	}
 	@RequestMapping("/save")
 	@ResponseBody
-	public Result add(Integer agentTypeId,
+	public Result save(Integer agentTypeId,
 			String receiverAddress, String receiverName, String receiverPhone) {
 
 		return applyGoodsService.save(agentTypeId,receiverAddress,

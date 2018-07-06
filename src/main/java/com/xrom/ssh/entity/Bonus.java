@@ -43,7 +43,62 @@ public class Bonus {
 	@Column(name = "state")
 	private Integer state;
 	
+	@Column(name = "collision_integral")
+	private Integer collisionIntegral;
 	
+	@Column(name = "collision_ratio")
+	private Double collisionRatio;
+	
+	@Column(name = "collision_top")
+	private Integer collisionTop;
+	
+	@Column(name = "left_performance")
+	private Integer leftPerformance;
+	
+	@Column(name = "right_performance")
+	private Integer rightPerformance;
+	
+	
+	public Integer getLeftPerformance() {
+		return leftPerformance;
+	}
+
+	public void setLeftPerformance(Integer leftPerformance) {
+		this.leftPerformance = leftPerformance;
+	}
+
+	public Integer getRightPerformance() {
+		return rightPerformance;
+	}
+
+	public void setRightPerformance(Integer rightPerformance) {
+		this.rightPerformance = rightPerformance;
+	}
+
+	public Integer getCollisionIntegral() {
+		return collisionIntegral;
+	}
+
+	public void setCollisionIntegral(Integer collisionIntegral) {
+		this.collisionIntegral = collisionIntegral;
+	}
+
+	public Double getCollisionRatio() {
+		return collisionRatio;
+	}
+
+	public void setCollisionRatio(Double collisionRatio) {
+		this.collisionRatio = collisionRatio;
+	}
+
+	public Integer getCollisionTop() {
+		return collisionTop;
+	}
+
+	public void setCollisionTop(Integer collisionTop) {
+		this.collisionTop = collisionTop;
+	}
+
 	public Integer getState() {
 		return state;
 	}

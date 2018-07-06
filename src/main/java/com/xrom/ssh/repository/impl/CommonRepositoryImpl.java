@@ -150,10 +150,12 @@ public class CommonRepositoryImpl<T> implements DomainRepository<T>{
             		continue;
             	}
             	if(value instanceof java.lang.String){
-            		if(value.toString().replaceAll(" ", "").equals("")){
-            			continue;
-            		}
-            		 value = "'" + value + "'";
+            		//这里不应该这么过滤，让它有空格就有空格，这样子过滤会有问题~！！！！！！！
+//            		if(value.toString().replaceAll(" ", "").equals("")){
+//            			continue;
+//            		}
+            		value = value.toString().replaceAll("'", ""); // 把单引号过滤，就不会有SQL注入了
+	        		value = "'" + value + "'";
             	}
             	list.add(" t." + f.getName() + "=" + value + " ");
 			} catch (Exception e) {

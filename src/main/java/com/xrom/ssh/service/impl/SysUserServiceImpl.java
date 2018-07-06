@@ -13,10 +13,12 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.dto.user.AdminUserInfo;
 import com.xrom.ssh.dto.user.UserInfoDTO;
 import com.xrom.ssh.entity.AgentTree;
+import com.xrom.ssh.entity.ApplyGoods;
 import com.xrom.ssh.entity.PretreatmentAgent;
 import com.xrom.ssh.entity.SysRole;
 import com.xrom.ssh.entity.SysUser;
@@ -31,6 +33,7 @@ import com.xrom.ssh.repository.SysUserRoleRepository;
 import com.xrom.ssh.service.AgentTreeService;
 import com.xrom.ssh.service.ApplyGoodsService;
 import com.xrom.ssh.service.SysUserService;
+import com.xrom.ssh.util.MD5;
 import com.xrom.ssh.util.Page;
 import com.xrom.ssh.util.Result;
 
@@ -54,12 +57,13 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysRoleRepository sysRoleRepository;
 	@Autowired
 	private PretreatmentAgentRepository pretreatmentAgentRepository;
-	
+
 	@Autowired
 	private ApplyGoodsService applyGoodsService;
-	
+
 	@Autowired
 	private AgentTreeService agentTreeService;
+
 	@Override
 	public Result<SysUser> login(String account, String password) {
 		if (account == null || password == null) {
@@ -69,6 +73,14 @@ public class SysUserServiceImpl implements SysUserService {
 		if (sysUser == null) {
 			return new Result<SysUser>("1", "用户不存在！", null);
 		}
+		if (sysUser.getIsActivate().equals(2)) {
+			return new Result<SysUser>("5", "帐号已经被禁用", null);
+		}
+		if (sysUser.getIsActivate().equals(0)) {
+			return new Result<SysUser>("4", "帐号没有激活，请联系激活", null);
+		}
+		password = MD5.getMD5Str(password);
+		// System.out.println(password);
 		if (!password.equals(sysUser.getUserPassword())) {
 			// 密码不匹配
 			return new Result<SysUser>("2", "密码不匹配！", null);
@@ -79,14 +91,16 @@ public class SysUserServiceImpl implements SysUserService {
 		return new Result<SysUser>("0", "登录成功！", sysUser);
 	}
 
+	@Transactional
 	@Override
 	public Result register(String userName, String userPassword,
 			String identityCard, String phone, Integer userSex,
 			String qqNumber, String recommendAccount, Integer agentTypeId,
-			String treeParentAccount, String position, String address) {
+			String treeParentAccount, String position, String address,
+			String userAccount) {
 		SysUser user = new SysUser();
 		user.setUserName(userName);
-		user.setUserPassword(userPassword);
+		user.setUserPassword(MD5.getMD5Str(userPassword));
 		user.setIdentityCard(identityCard);
 		user.setPhone(phone);
 		user.setUserSex(userSex);
@@ -95,63 +109,100 @@ public class SysUserServiceImpl implements SysUserService {
 		user.setLastLoginTime(new Date());
 		user.setRegisterTime(new Date());
 		user.setRealName(userName);
-		user.setIsActivate(false);
-		user.setSecondPassword("666666");
+		user.setIsActivate(0);// 未激活
+		user.setSecondPassword(MD5.getMD5Str("666666"));
 		user.setAddress(address);
 		user.setBalance(0);
 		user.setIsAdmin(false);
 		SysUser recommUser = userRepository.getByAccount(recommendAccount);
-		user.setRecommendUserId(recommUser.getId());
-		// 取一个7位数的用户号
-		Long account = (long) ((Math.random() * 9 + 1) * 1000000);
-		while (userRepository.getByAccount(account.toString()) != null) {
-			account = (long) ((Math.random() * 9 + 1) * 1000000);
+		if (recommUser.getIsActivate().equals(0)) {
+			return new Result<>("1", "对不起,你的帐号没有激活，请先完成激活再进行操作！", null);
 		}
-		user.setAccountNumber(account.toString());
-		userRepository.save(user);
-		
-		// 提交代理时顺便把订单提上
-		applyGoodsService.saveToUser(user,agentTypeId, address, userName, phone);
-		///
-		
-		//保存至预受理用户
-		PretreatmentAgent pretreatmentAgent = new PretreatmentAgent();
-		if("left".equals(position)){
-			pretreatmentAgent.setPosition("left");
+		user.setRecommendUserId(recommUser.getId());
+		if(userAccount!=null){
+			userAccount = userAccount.replaceAll(" ", "");
+		}
+		if (userAccount == null || userAccount.equals("")) {
+			
+			// 取一个7位数的用户号
+			Long account = (long) ((Math.random() * 9 + 1) * 1000000);
+			while (userRepository.getByAccount(account.toString()) != null) {
+				account = (long) ((Math.random() * 9 + 1) * 1000000);
+			}
+			user.setAccountNumber(account.toString());
 		}else{
+			if(userAccount.length()<7){
+				return new Result<>("3", "帐号长度需要大于7", null);
+			}
+			else if(userRepository.getByAccount(userAccount)==null){
+				user.setAccountNumber(userAccount);
+			}else{
+				return new Result<>("2", "对不起,这个帐号已经被使用了", null);
+			}
+			
+		}
+		
+
+		userRepository.save(user);
+
+		// 提交代理时顺便把订单提上
+		applyGoodsService.saveToUser(user, agentTypeId, address, userName,
+				phone);
+		// /
+
+		// 保存至预受理用户
+		PretreatmentAgent pretreatmentAgent = new PretreatmentAgent();
+		if ("left".equals(position)) {
+			pretreatmentAgent.setPosition("left");
+		} else if ("right".equals(position)) {
 			pretreatmentAgent.setPosition("right");
+		} else {
+			pretreatmentAgent.setPosition("none");
 		}
 		pretreatmentAgent.setState(0);
-		if(treeParentAccount!=null){
-			SysUser treeParentUser = userRepository.getByAccount(treeParentAccount);
+		if (treeParentAccount != null) {
+			SysUser treeParentUser = userRepository
+					.getByAccount(treeParentAccount);
 			pretreatmentAgent.setTreeParentUserId(treeParentUser.getId());
-		}else{
+		} else {
 			pretreatmentAgent.setTreeParentUserId(recommUser.getId());
 		}
 		pretreatmentAgent.setUserId(user.getId());
+		if ("none".equals(position)) {
+			// 不放在任何人的左右边，自己形成一个根
+			pretreatmentAgent.setTreeParentUserId(0);
+		}
 		pretreatmentAgentRepository.save(pretreatmentAgent);
-		
+
 		return new Result<>("0", "注册成功", user);
 	}
 
-	
-
+	@Transactional
 	@Override
-	public Result alertPassword(String account, String oldPassword,
-			String newPassword) {
-		if (oldPassword == null || newPassword == null || account == null) {
+	public Result alertPassword(String oldPassword, String newPassword) {
+		if (oldPassword == null || newPassword == null) {
 			return new Result<>("1", "你的输入不合法", null);
 		}
 		if (newPassword.length() < 6) {
 			return new Result<>("2", "密码需要大于等于6位", null);
 		}
-		SysUser user = userRepository.getByAccount(account);
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		SysUser user = userRepository.get(userId);
+		oldPassword = MD5.getMD5Str(oldPassword);
 		if (!oldPassword.equals(user.getUserPassword())) {
 			return new Result<>("3", "旧密码不对", null);
 		}
-		user.setUserPassword(newPassword);
+		user.setUserPassword(MD5.getMD5Str(newPassword));
 		userRepository.saveOrUpdate(user);
 		return new Result<>("0", "修改成功", null);
+	}
+
+	@Override
+	public Result getUserName(String userAccount) {
+
+		return new Result<>("0", "获取成功", userRepository.getByAccount(
+				userAccount).getUserName());
 	}
 
 	@Override
@@ -191,7 +242,8 @@ public class SysUserServiceImpl implements SysUserService {
 		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
 				.getAttribute("userId");
 		entity.setSysUserId(userId);
-		List<SysUserRole> sysUserRoles = sysUserRoleRepository.queryByEntity(entity);
+		List<SysUserRole> sysUserRoles = sysUserRoleRepository
+				.queryByEntity(entity);
 		List<Integer> roleIds = new ArrayList<>();
 		for (int j = 0; j < sysUserRoles.size(); j++) {
 			roleIds.add(sysUserRoles.get(j).getRoleId());
@@ -210,6 +262,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return permisstions;
 	}
 
+	@Transactional
 	@Override
 	public Result updateInfo(String phone, String qqNumber, String address,
 			String email, String bankName, String bankCard, String bankAddress) {
@@ -228,35 +281,87 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public Result findAdminUserPage(SysUser object, int pageIndex, int pageSize,
-			String orderBy) {
+	public Result findAdminUserPage(SysUser object, int pageIndex,
+			int pageSize, String orderBy) {
 		SysUser user = new SysUser();
 		user.setIsAdmin(true);
-		Page<SysUser> page = userRepository.findPage(user, pageIndex, pageSize, "id desc");
-		
+		Page<SysUser> page = userRepository.findPage(user, pageIndex, pageSize,
+				"id desc");
+
 		List<AdminUserInfo> result = new ArrayList<>();
 		for (int i = 0; i < page.getResult().size(); i++) {
-		
+
 			AdminUserInfo bonusInfo = new AdminUserInfo();
 			SysUser bonus = page.getResult().get(i);
 			BeanUtils.copyProperties(bonus, bonusInfo);
 			SysUserRole entity = new SysUserRole();
 			entity.setSysUserId(bonus.getId());
-			List<SysUserRole> sysUserRoles = sysUserRoleRepository.queryByEntity(entity);
+			List<SysUserRole> sysUserRoles = sysUserRoleRepository
+					.queryByEntity(entity);
 			List<Integer> roleIds = new ArrayList<>();
 			for (int j = 0; j < sysUserRoles.size(); j++) {
 				roleIds.add(sysUserRoles.get(j).getRoleId());
 			}
 			List<SysRole> roleList = sysRoleRepository.queryByIDs(roleIds);
-//			System.out.println(roleIds.get(0));
-//			System.out.println(roleIds.get(1));
+			// System.out.println(roleIds.get(0));
+			// System.out.println(roleIds.get(1));
 			bonusInfo.setRoleList(roleList);
 			result.add(bonusInfo);
 		}
 		Page<AdminUserInfo> page2 = new Page<>(page.getPageSize(),
 				page.getTotalCount(), page.getPageNum());
 		page2.setResult(result);
-		
+
 		return new Result<>("0", "获取成功", page2);
+	}
+
+	@Override
+	public Result findNormalUserPage(SysUser object, int pageIndex,
+			int pageSize, String orderBy) {
+		SysUser user = new SysUser();
+		BeanUtils.copyProperties(object, user);
+		user.setIsAdmin(false);
+		Page<SysUser> page = userRepository.findPage(user, pageIndex, pageSize,
+				"id desc");
+
+		return new Result<>("0", "获取成功", page);
+	}
+
+	/**
+	 * 从当前session中查出当前已经登录的用户信息
+	 */
+	@Override
+	public SysUser getCurrentLoginUser() {
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		return userRepository.get(userId);
+	}
+
+	/**
+	 * 如果没有处理禁用状态就禁用，不然就解禁用
+	 */
+	@Transactional
+	@Override
+	public Result forbidOrUnforbid(Integer userId) {
+
+		SysUser user = userRepository.get(userId);
+		if (user.getIsActivate().equals(1) ) {
+			user.setIsActivate(2);// 禁用
+		} else if (user.getIsActivate().equals(2)) {
+			user.setIsActivate(1);// 解除禁用
+		}
+		// 未激活状态下不支持禁用
+		userRepository.saveOrUpdate(user);
+		return new Result<>("0", "操作成功", null);
+
+	}
+	@Override
+	public Result findTeamPage(SysUser object, int pageIndex,
+			int pageSize, String orderBy){
+		//这个方法没有实现分页的
+		List<SysUser> list = agentTreeRepository.findTopUser(pageIndex, pageSize, orderBy);
+		Page<SysUser> page = new Page<SysUser>(list.size(), (long)list.size(), 0);
+		page.setResult(list);
+		return new Result<>("0","获取成功",page);
 	}
 }

@@ -2,6 +2,7 @@ package com.xrom.ssh.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.entity.AgentType;
 import com.xrom.ssh.repository.AgentTypeRepository;
@@ -23,6 +24,7 @@ public class AgentTypeServiceImpl implements AgentTypeService {
 		return new Result<>("0", "获取成功", page);
 	}
 
+	@Transactional
 	@Override
 	public Result saveOrUpdate(Integer id, Integer ableCount, Integer integral,
 			String name, Integer totalMoney, Double collisionPer,
@@ -42,6 +44,7 @@ public class AgentTypeServiceImpl implements AgentTypeService {
 		return new Result<AgentType>("0", "操作成功！", entity);
 	}
 
+	@Transactional
 	@Override
 	public Result delete(Integer id) {
 		agentTypeRepository.delete(id);

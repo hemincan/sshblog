@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.entity.SysMenu;
 import com.xrom.ssh.repository.SysMenuRepository;
@@ -20,6 +21,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	
 		 return new Result<List<SysMenu>>("0","获取成功！", sysMenuRepository.findAll());
 	}
+	@Transactional
 	@Override
 	public Result saveMenu(Integer id,String icon,String menuName,String parentId,String url){
 		SysMenu meun = new SysMenu();
@@ -31,6 +33,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		sysMenuRepository.saveOrUpdate(meun);
 		return new Result<SysMenu>("0","操作成功！",meun);
 	}
+	@Transactional
 	@Override
 	public Result deleteMenu(Integer id) {
 		sysMenuRepository.delete(id);

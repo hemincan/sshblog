@@ -12,5 +12,7 @@ public interface AgentTreeService {
 
 	void saveInAgentTree(String position, SysUser parentUser, SysUser user);
 
+	Result statistics();
+
 	
 }

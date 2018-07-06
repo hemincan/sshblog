@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.dto.bonus.BonusInfo;
 import com.xrom.ssh.dto.withdraw.WithdrawInfo;
@@ -63,16 +64,24 @@ public class WithdrawServiceImpl implements WithdrawService {
 	public Result get(Integer id) {
 		return new Result<>("0", "获取成功", withdrawRepository.get(id));
 	}
-
+	@Transactional
 	@Override
 	public Result save(Integer withdrawMoney, String bankName,
 			String bankAddress, String bankCard,String bankUserName) {
 		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
 				.getAttribute("userId");
 		SysUser user = sysUserRepository.get(userId);
+		if(user.getBalance()==null){
+			user.setBalance(0);
+		}
 		if (user.getBalance() < withdrawMoney) {
 			return new Result<>("1", "余额不足，不能提现", null);
 		}
+		if(withdrawMoney<100){
+			return new Result<>("2", "至少提现100元", null);
+		}
+		user.setBalance(user.getBalance()-withdrawMoney);
+		sysUserRepository.saveOrUpdate(user);
 		Withdraw withdraw = new Withdraw();
 		withdraw.setApplicationTime(new Date());
 		withdraw.setPoundage((int) Math.round(withdrawMoney * 0.01));// 手续费
@@ -86,6 +95,25 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setBankUserNane(bankUserName);
 		withdraw.setUserAccount(user.getAccountNumber());
 		withdrawRepository.save(withdraw);
-		return new Result<>("0", "提现申请已经提交，请等待！", null);
+		
+		return new Result<>("0", "提现申请已经提交，请等待处理！", null);
+	}
+	@Transactional
+	@Override
+	public Result active(Integer id){
+		
+		
+		Withdraw withdraw = withdrawRepository.get(id);
+		if(withdraw.getState().equals(1)){
+			return new Result<>("1", "已经被处理", null);
+		}
+		withdraw.setState(1);//已经处理
+		withdraw.setHandleDate(new Date());
+		Integer userId = (Integer) SecurityUtils.getSubject().getSession()
+				.getAttribute("userId");
+		SysUser user = sysUserRepository.get(userId);
+		withdraw.setHandleAccount(user.getAccountNumber());
+		withdrawRepository.saveOrUpdate(withdraw);
+		return new Result<>("0", "处理成功", null);
 	}
 }

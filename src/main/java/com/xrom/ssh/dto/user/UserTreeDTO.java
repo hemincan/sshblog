@@ -10,6 +10,26 @@ public class UserTreeDTO {
 	
 	private Integer recommendUserId;
 
+	private Integer agentTypeId;
+	
+	private String agentTypeName;
+	
+	public Integer getAgentTypeId() {
+		return agentTypeId;
+	}
+
+	public void setAgentTypeId(Integer agentTypeId) {
+		this.agentTypeId = agentTypeId;
+	}
+
+	public String getAgentTypeName() {
+		return agentTypeName;
+	}
+
+	public void setAgentTypeName(String agentTypeName) {
+		this.agentTypeName = agentTypeName;
+	}
+
 	public Integer getId() {
 		return id;
 	}

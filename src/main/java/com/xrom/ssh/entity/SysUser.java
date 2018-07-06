@@ -71,7 +71,7 @@ public class SysUser {
 	private String secondPassword;
 	
 	@Column(name = "is_activate")
-	private Boolean isActivate;
+	private Integer isActivate;
 
 	@Column(name = "agent_type_id")
 	private Integer agentTypeId;
@@ -253,11 +253,11 @@ public class SysUser {
 		this.secondPassword = secondPassword;
 	}
 
-	public Boolean getIsActivate() {
+	public Integer getIsActivate() {
 		return isActivate;
 	}
 
-	public void setIsActivate(Boolean isActivate) {
+	public void setIsActivate(Integer isActivate) {
 		this.isActivate = isActivate;
 	}
 

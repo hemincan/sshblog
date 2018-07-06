@@ -35,4 +35,11 @@ public class AgentTreeController {
 		
 		return agentTreeService.treeStructure(account);
 	}
+	//找出用户与直接推荐代理之间的关系
+		@RequestMapping("/statistics")
+		@ResponseBody
+		public Result statistics() {
+			
+			return agentTreeService.statistics();
+		}
 }

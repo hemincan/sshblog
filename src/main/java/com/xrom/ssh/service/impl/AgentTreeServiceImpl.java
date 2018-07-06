@@ -8,13 +8,18 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.xrom.ssh.dto.user.AgentStatisticDTO;
 import com.xrom.ssh.dto.user.AgentTreeDTO;
 import com.xrom.ssh.dto.user.UserTreeDTO;
 import com.xrom.ssh.entity.AgentTree;
+import com.xrom.ssh.entity.AgentType;
+import com.xrom.ssh.entity.ApplyGoods;
 import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.repository.AgentTreeRepository;
 import com.xrom.ssh.repository.AgentTypeRepository;
+import com.xrom.ssh.repository.ApplyGoodsRepository;
 import com.xrom.ssh.repository.SysUserRepository;
 import com.xrom.ssh.service.AgentTreeService;
 import com.xrom.ssh.util.Result;
@@ -28,6 +33,10 @@ public class AgentTreeServiceImpl implements AgentTreeService {
 	private AgentTreeRepository agentTreeRepository;
 	@Autowired
 	private AgentTypeRepository agentTypeRepository;
+	
+	@Autowired
+	private ApplyGoodsRepository applyGoodsRepository;
+	
 	@Override
 	public Result recommendedStructure() {
 		Subject currentUser = SecurityUtils.getSubject();
@@ -43,15 +52,51 @@ public class AgentTreeServiceImpl implements AgentTreeService {
 		for (int i = 0; i < userList.size(); i++) {
 			UserTreeDTO dto = new UserTreeDTO();
 			BeanUtils.copyProperties(userList.get(i), dto);
+			AgentType agenttype = agentTypeRepository.get(dto.getAgentTypeId());
+			dto.setAgentTypeName(agenttype.getName());
 			result.add(dto);
 		}
-		UserTreeDTO dto = new UserTreeDTO();
-		BeanUtils.copyProperties(user, dto);
-		result.add(dto);
+//		UserTreeDTO dto = new UserTreeDTO();
+//		BeanUtils.copyProperties(user, dto);
+//		result.add(dto);
 		return new Result<>("0", "获取成功！", result);
 
 	}
-
+	/**
+	 * 统计用户的代理数，总绩效
+	 */
+	@Override
+	public Result statistics(){
+		Subject currentUser = SecurityUtils.getSubject();
+		Integer userId = (Integer) currentUser.getSession().getAttribute(
+				"userId");
+		List<SysUser> userList = userRepository.getUserByRecommendUser(userId);
+		
+		AgentStatisticDTO dto = new AgentStatisticDTO();
+		if(userList==null){
+			dto.setAgentCount(0);
+			dto.setApplyGoodsCount(0);
+			dto.setTotalApplyMoney(0);
+			return new Result<>("0", "获取成功！", dto);
+		}
+		dto.setAgentCount(userList.size());
+		List<Integer> ids = new ArrayList<>();
+		for (int i = 0; i < userList.size(); i++) {
+			ids.add(userList.get(i).getId());
+		}
+		List<ApplyGoods> applygoodslist = applyGoodsRepository.findAllMyAgentSGoods(ids);
+		dto.setApplyGoodsCount(applygoodslist.size());
+		Integer totalmoney=0;
+		for (int i = 0; i < applygoodslist.size(); i++) {
+			if(applygoodslist.get(i).getTotalMoney()!=null){
+				totalmoney+=applygoodslist.get(i).getTotalMoney();
+			}
+			
+		}
+		dto.setTotalApplyMoney(totalmoney);
+		return new Result<>("0", "获取成功！", dto);
+	}
+	
 	@Override
 	public Result treeStructure(String account) {
 		SysUser user = userRepository.getByAccount(account);
@@ -93,7 +138,7 @@ public class AgentTreeServiceImpl implements AgentTreeService {
 			dto.getChildren().add(new AgentTreeDTO());
 		}
 
-		if (level == 3)
+		if (level.equals(3))
 			return;
 		if (lefSysUser != null) {
 			AgentTree agentTree2 = agentTreeRepository.getByUserId(lefSysUser
@@ -137,6 +182,7 @@ public class AgentTreeServiceImpl implements AgentTreeService {
 	/**
 	 * 保存至用户树的结构，之后就可以进行对碰奖金的统计
 	 */
+	@Transactional
 	@Override
 	public void saveInAgentTree(String position,SysUser parentUser,SysUser user){
 		//放在parentUser的Position这边

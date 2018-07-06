@@ -45,4 +45,10 @@ public class WithdrawController {
 		return withdrawService.save(withdrawMoney, bankName, bankAddress,
 				bankCard, bankUserName);
 	}
+	@RequiresRoles(value={"admin"})
+	@RequestMapping("/active")
+	@ResponseBody
+	public Result active(Integer id) {
+		return withdrawService.active(id);
+	}
 }

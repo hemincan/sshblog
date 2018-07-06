@@ -15,4 +15,6 @@ public interface WithdrawService {
 	Result findPageUser(Withdraw entity, int pageIndex, int pageSize,
 			String orderBy);
 
+	Result active(Integer id);
+
 }

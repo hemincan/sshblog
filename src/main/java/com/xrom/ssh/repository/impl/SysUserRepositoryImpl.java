@@ -11,7 +11,7 @@ public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> impleme
 	
 	
 	public SysUser getByAccount(String account){
-		if(account==null){
+		if(account==null || account.equals("")){
 			return null;
 		}
 		SysUser sysUser = new SysUser();
@@ -29,6 +29,7 @@ public class SysUserRepositoryImpl extends CommonRepositoryImpl<SysUser> impleme
 		}
 		SysUser sysUser = new SysUser();
 		sysUser.setRecommendUserId(userId);
+		sysUser.setIsActivate(1);//只有激活的才有显示
 		List<SysUser> list = this.queryByEntity(sysUser);
 		if (!list.isEmpty()){
 			return list;

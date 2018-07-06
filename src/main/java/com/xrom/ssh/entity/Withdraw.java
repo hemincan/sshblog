@@ -1,6 +1,5 @@
 package com.xrom.ssh.entity;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -55,6 +54,28 @@ public class Withdraw  {
 	
 	@Column(name = "user_account")
 	private String userAccount;
+	
+	@Column(name = "handle_account")
+	private String handleAccount;
+	
+	@Column(name = "handle_date")
+	private Date handleDate;
+	
+	public String getHandleAccount() {
+		return handleAccount;
+	}
+
+	public void setHandleAccount(String handleAccount) {
+		this.handleAccount = handleAccount;
+	}
+
+	public Date getHandleDate() {
+		return handleDate;
+	}
+
+	public void setHandleDate(Date handleDate) {
+		this.handleDate = handleDate;
+	}
 
 	public String getUserAccount() {
 		return userAccount;

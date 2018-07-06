@@ -10,7 +10,7 @@ public interface SysUserService {
 	Result login(String account, String password);
 
 
-	Result alertPassword(String account, String oldPassword, String newPassword);
+	
 
 	
 	Set<String> findUserRoles(String account); 
@@ -21,11 +21,6 @@ public interface SysUserService {
 
 
 
-	Result register(String userName, String userPassword, String identityCard,
-			String phone, Integer userSex, String qqNumber,
-			String recommendAccount, Integer agentTypeId,
-			String treeParentAccount, String position, String address);
-
 
 	Result getUserInfo();
 
@@ -35,6 +30,51 @@ public interface SysUserService {
 
 
 	Result findAdminUserPage(SysUser object, int pageIndex, int pageSize,
+			String orderBy);
+
+
+	Result alertPassword(String oldPassword, String newPassword);
+
+
+
+
+
+	Result findNormalUserPage(SysUser object, int pageIndex, int pageSize,
+			String orderBy);
+
+
+
+
+
+	Result forbidOrUnforbid(Integer userId);
+
+
+
+
+
+	SysUser getCurrentLoginUser();
+
+
+
+
+
+	Result getUserName(String userAccount);
+
+
+
+
+
+	Result register(String userName, String userPassword, String identityCard,
+			String phone, Integer userSex, String qqNumber,
+			String recommendAccount, Integer agentTypeId,
+			String treeParentAccount, String position, String address,
+			String userAccount);
+
+
+
+
+
+	Result findTeamPage(SysUser object, int pageIndex, int pageSize,
 			String orderBy);
 
 

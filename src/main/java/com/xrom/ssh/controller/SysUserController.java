@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xrom.ssh.entity.SysUser;
 import com.xrom.ssh.service.BounsService;
 import com.xrom.ssh.service.SysUserService;
 import com.xrom.ssh.util.Result;
@@ -59,10 +60,10 @@ public class SysUserController {
 	public Result register(String userName, String userPassword,
 			String identityCard, String phone, Integer userSex,
 			String qqNumber, String recommendAccount, Integer agentTypeId,
-			String treeParentAccount, String position, String address) {
+			String treeParentAccount, String position, String address,String userAccount) {
 		return userService.register(userName, userPassword, identityCard,
 				phone, userSex, qqNumber, recommendAccount, agentTypeId,
-				treeParentAccount, position, address);
+				treeParentAccount, position, address,userAccount);
 	}
 
 	@RequestMapping("/user/updateInfo")
@@ -74,9 +75,9 @@ public class SysUserController {
 
 	@RequestMapping("/user/alertPassword")
 	@ResponseBody
-	public Result alertPassword(String account, String oldPassword,
+	public Result alertPassword( String oldPassword,
 			String newPassword) {
-		return userService.alertPassword(account, oldPassword, newPassword);
+		return userService.alertPassword(oldPassword, newPassword);
 	}
 
 	@RequestMapping("/user/getUserInfo")
@@ -84,7 +85,15 @@ public class SysUserController {
 	public Result getUserInfo() {
 		return userService.getUserInfo();
 	}
-	
+	/**
+	 * 用户验证帐户的信息
+	 * @return
+	 */
+	@RequestMapping("/user/getUserName")
+	@ResponseBody
+	public Result getUserName(String userAccount) {
+		return userService.getUserName(userAccount);
+	}
 	
 	@RequiresRoles({"superadmin"})
 	@RequestMapping("/user/findAdminUserPage")
@@ -93,7 +102,27 @@ public class SysUserController {
 			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
 		return userService.findAdminUserPage(null, pageIndex, pageSize, orderBy);
 	}
-
+	
+	@RequiresRoles({"admin"})
+	@RequestMapping("/user/findNormalUserPage")
+	@ResponseBody
+	public Result findNormalUserPage(SysUser user,@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return userService.findNormalUserPage(user, pageIndex, pageSize, orderBy);
+	}
+	@RequiresRoles({"admin"})
+	@RequestMapping("/user/forbidOrUnforbid")
+	@ResponseBody
+	public Result forbidOrUnforbid(Integer userId) {
+		return userService.forbidOrUnforbid(userId);
+	}
+	@RequiresRoles({"admin"})
+	@RequestMapping("/user/findTeamPage")
+	@ResponseBody
+	public Result findTeamPage(@RequestParam(defaultValue = "0") int pageIndex,
+			@RequestParam(defaultValue = "15") int pageSize, String orderBy) {
+		return userService.findTeamPage(null, pageIndex, pageSize, orderBy);
+	}
 	/**
 	 * shiro没有登录时使用这个链接来返回错误。
 	 * 

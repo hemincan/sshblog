@@ -2,6 +2,7 @@ package com.xrom.ssh.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xrom.ssh.entity.SysRole;
 import com.xrom.ssh.entity.SysUserRole;
@@ -28,6 +29,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return new Result<>("0", "获取成功", page);
 	}
 
+	@Transactional
 	@Override
 	public Result saveOrUpdateRole(Integer id, String remark, String roleName,
 			String sortOrder, String enName) {
@@ -41,6 +43,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return new Result<SysRole>("0", "操作成功！", role);
 	}
 
+	@Transactional
 	@Override
 	public Result deleteRole(Integer id) {
 		sysRoleRepository.delete(id);
@@ -52,6 +55,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		return new Result<>("0", "获取成功", sysRoleRepository.get(id));
 	}
 
+	@Transactional
 	@Override
 	public Result addRoleToUser(Integer userId,String ids) {
 		String []idlist = ids.split(",");

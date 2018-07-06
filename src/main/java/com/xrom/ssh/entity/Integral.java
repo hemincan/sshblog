@@ -36,6 +36,18 @@ public class Integral {
 	@Column(name = "state")
 	private Integer state;
 	
+	@Column(name = "position")
+	private String position;
+	
+	
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public Integer getState() {
 		return state;
 	}
